@@ -7,7 +7,7 @@ This module provides a Python interface to the Socrates API.
 #### Stable
 
 ```bash
-pip install git+https://github.com/jyro-io/spi@0.1.3#egg=spi-0.1.3
+pip install git+https://github.com/jyro-io/spi@0.1.4#egg=spi-0.1.4
 ```
 
 #### Dev
