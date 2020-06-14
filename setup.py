@@ -5,13 +5,13 @@ from setuptools import setup
 
 setup(
     name='spi',
-    version='0.1.4',
+    version='0.1.5',
     packages=['spi',],
     license='GNU GPL',
     long_description=open('README.md').read(),
     # https://github.com/pypa/setuptools/issues/987#issuecomment-318349568
     install_requires=[
-        'pytprint>=0.2.1',
+        'pytprint==0.2.1',
         'pymongo',
         'requests'
     ],
