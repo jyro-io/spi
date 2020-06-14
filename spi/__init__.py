@@ -1,13 +1,10 @@
 import requests
-from pytprint.tprint import print
+from pytprint import print
 from datetime import datetime
 import socket
 import json
 import pymongo
 from urllib.parse import quote_plus
-
-NAME = 'socrates_python_interface'
-VERSION = '0.2.0'  # semver
 
 
 class SocratesConnectError(Exception):
