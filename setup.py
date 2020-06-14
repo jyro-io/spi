@@ -4,9 +4,12 @@
 from distutils.core import setup
 
 setup(
-    name='pytprint',
-    py_modules=['pytprint.py',],
+    name='spi',
+    py_modules=['socrates_python_interface.py',],
     license='GNU GPL',
     long_description=open('README.md').read(),
-    dependency_links=['http://github.com/user/repo/tarball/master#egg=package-1.0'],
+    dependency_links=['git+https://github.com/rory-linehan/pytprint'],
+    install_requires=[
+        'pymongo',
+    ],
 )
