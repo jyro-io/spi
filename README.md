@@ -25,7 +25,7 @@ except spi.SocratesConnectError as err:
     print('failed to connect to socrates: ' + err)
     sys.exit(1)
 
-status, response = spi.get_configuration_from_socrates(api='archimedes', key="classifier")
+status, response = spi.get_configuration_from_socrates(api='archimedes', key='classifier')
 if status is False:
     spi.log(
         level=3,
