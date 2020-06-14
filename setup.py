@@ -5,7 +5,8 @@ from distutils.core import setup
 
 setup(
     name='spi',
-    py_modules=['socrates_python_interface.py',],
+    version='0.2.0',
+    packages=['spi',],
     license='GNU GPL',
     long_description=open('README.md').read(),
     dependency_links=['git+https://github.com/rory-linehan/pytprint'],
