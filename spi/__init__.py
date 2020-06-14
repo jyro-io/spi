@@ -81,9 +81,6 @@ class Socrates:
             username <string> Socrates username
             password <string> Socrates password
             verify <bool> SSL verify
-        :return:
-            status <bool>
-            response <string>
         """
         self.host = kwargs['host']
         self.verify = kwargs['verify']
