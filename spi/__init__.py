@@ -190,7 +190,8 @@ class Socrates:
         Get raw data from given datasource
         :param kwargs:
             name <string> definition name to get
-
+            start <string> %Y-%m-%dT%H:%M:%S
+            end <string> %Y-%m-%dT%H:%M:%S
         :return:
             status <bool>
             response <string>
@@ -198,7 +199,7 @@ class Socrates:
         r = requests.post(
             'https://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
             headers=self.headers,
-            json={"operation": "get", "name": kwargs['name']},
+            json={"operation": "get", "name": kwargs['name'], 'start': kwargs['start'], 'end': kwargs['end']},
             verify=self.verify
         )
         if r.status_code == 200:
