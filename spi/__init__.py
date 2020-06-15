@@ -7,10 +7,6 @@ import pymongo
 from urllib.parse import quote_plus
 
 
-class SocratesConnectError(Exception):
-    pass
-
-
 def log(**kwargs):
     """
     Internal, thread-safe logging function with standardized JSON formatting
@@ -72,6 +68,10 @@ def connect_to_mongo(**kwargs):
         return False, err
 
 
+class SocratesConnectError(Exception):
+    pass
+
+
 class Socrates:
     def __init__(self, **kwargs):
         """
@@ -95,7 +95,7 @@ class Socrates:
         else:
             raise SocratesConnectError({'response': r.text})
 
-    def get_definition_from_socrates(self, **kwargs):
+    def get_definition(self, **kwargs):
         """
         Get a JSON definition record from a specified api.module endpoint
         :param kwargs:
@@ -117,7 +117,96 @@ class Socrates:
         else:
             return False, r.text
 
-    def get_configuration_from_socrates(self, **kwargs):
+    def add_definition(self, **kwargs):
+        """
+        Create definition
+        :param kwargs:
+            api <string> API to request
+            module <string> module within selected api (ie endpoint)
+            name <string> definition name
+            definition <string> definition JSON body
+        :return:
+            status <bool>
+            response <string>
+        """
+        r = requests.post(
+            'https://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            headers=self.headers,
+            json={"operation": "add", "name": kwargs['name'], "definition": kwargs['definition']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            return False, r.text
+
+    def update_definition(self, **kwargs):
+        """
+        Update definition
+        :param kwargs:
+            api <string> API to request
+            module <string> module within selected api (ie endpoint)
+            name <string> definition name
+            definition <string> definition JSON body
+        :return:
+            status <bool>
+            response <string>
+        """
+        r = requests.post(
+            'https://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            headers=self.headers,
+            json={"operation": "update", "name": kwargs['name'], "definition": kwargs['definition']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            return False, r.text
+
+    def delete_definition(self, **kwargs):
+        """
+        Delete definition
+        :param kwargs:
+            api <string> API to request
+            module <string> module within selected api (ie endpoint)
+            name <string> definition name
+        :return:
+            status <bool>
+            response <string>
+        """
+        r = requests.post(
+            'https://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            headers=self.headers,
+            json={"operation": "delete", "name": kwargs['name']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            return False, r.text
+
+    def get_raw_data(self, **kwargs):
+        """
+        Get raw data from given datasource
+        :param kwargs:
+            name <string> definition name to get
+
+        :return:
+            status <bool>
+            response <string>
+        """
+        r = requests.post(
+            'https://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            headers=self.headers,
+            json={"operation": "get", "name": kwargs['name']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            return False, r.text
+
+    def get_config(self, **kwargs):
         """
         Get a JSON configuration record from a specified api
         :param kwargs:

@@ -1,19 +1,17 @@
-## SPI
-
-This module provides a Python interface to the Socrates API.
+## Socrates for Python
 
 ### Install
 
 #### Stable
 
 ```bash
-pip install git+https://github.com/jyro-io/spi@0.1.6#egg=spi-0.1.6
+pip install git+https://github.com/jyro-io/spi@0.2.0#egg=spi-0.2.0
 ```
 
 #### Dev
 
 ```bash
-pip install git+https://github.com/jyro-io/spi@master#egg=spi-dev
+pip install git+https://github.com/jyro-io/spi.git@master#egg=spi-dev
 ```
 
 ### Usage
@@ -30,10 +28,10 @@ try:
         verify=True
     )
 except spi.SocratesConnectError as err:
-    print('failed to connect to socrates: ' + err)
+    print('failed to connect to socrates: ' + str(err))
     sys.exit(1)
 
-status, response = spi.get_configuration_from_socrates(api='archimedes', key='classifier')
+status, response = socrates.get_configuration(api='archimedes', key='some_config_key')
 if status is False:
     spi.log(
         level=3,
@@ -44,4 +42,17 @@ if status is False:
     )
     sys.exit(1)
 config = response
+
+status, response = socrates.get_definition(api='archimedes', module='datasource', name='some_datasource_name')
+if status is True:
+    dd = response
+    status, response = spi.connect_to_mongo(
+        host=dd['host'],
+        username=dd['username'],
+        password=dd['password'],
+        database=dd['database']
+    )
+    if status is True:
+        ds = response
+        ds['database']['collection'].find({})
 ```
