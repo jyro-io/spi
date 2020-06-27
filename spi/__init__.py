@@ -75,7 +75,7 @@ class SocratesConnectError(Exception):
 class Socrates:
     def __init__(self, **kwargs):
         """
-        Construct a Socrates interface object
+        Construct a Socrates HTTP interface object
         :param kwargs:
             host <string> Socrates host
             username <string> Socrates username
