@@ -224,7 +224,7 @@ class Socrates:
             verify=self.verify
         )
         if r.status_code == 200:
-            return True, [i for i in r.json()['get_thread_iteration_set']]
+            return True, r.json()
         else:
             return False, r.text
 
