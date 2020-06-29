@@ -84,8 +84,9 @@ class Socrates:
         """
         self.host = kwargs['host']
         self.verify = kwargs['verify']
+        self.protocol = kwargs['protocol']
         r = requests.post(
-            'https://'+self.host+'/auth',
+            self.protocol+'://'+self.host+'/auth',
             headers={"Content-Type": "application/json"},
             json={"username": kwargs['username'], "password": kwargs['password']},
             verify=kwargs['verify']
@@ -107,7 +108,7 @@ class Socrates:
             response <string>
         """
         r = requests.post(
-            'https://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
             headers=self.headers,
             json={"operation": "get", "name": kwargs['name']},
             verify=self.verify
@@ -130,7 +131,7 @@ class Socrates:
             response <string>
         """
         r = requests.post(
-            'https://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
             headers=self.headers,
             json={"operation": "add", "name": kwargs['name'], "definition": kwargs['definition']},
             verify=self.verify
@@ -153,7 +154,7 @@ class Socrates:
             response <string>
         """
         r = requests.post(
-            'https://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
             headers=self.headers,
             json={"operation": "update", "name": kwargs['name'], "definition": kwargs['definition']},
             verify=self.verify
@@ -175,7 +176,7 @@ class Socrates:
             response <string>
         """
         r = requests.post(
-            'https://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
             headers=self.headers,
             json={"operation": "delete", "name": kwargs['name']},
             verify=self.verify
@@ -197,13 +198,33 @@ class Socrates:
             response <string>
         """
         r = requests.post(
-            'https://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
             headers=self.headers,
             json={"operation": "get", "name": kwargs['name'], 'start': kwargs['start'], 'end': kwargs['end']},
             verify=self.verify
         )
         if r.status_code == 200:
             return True, r.json()
+        else:
+            return False, r.text
+
+    def get_thread_iteration_set(self, **kwargs):
+        """
+        Get defined set of keys from datasource to parallelize processing
+        :param kwargs:
+            name <string> scraper definition name to get
+        :return:
+            status <bool>
+            response <string>
+        """
+        r = requests.post(
+            self.protocol+'://'+self.host+'/archimedes/'+kwargs['module'],
+            headers=self.headers,
+            json={"operation": "get_thread_iteration_set", "name": kwargs['name']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()['get_thread_iteration_set']
         else:
             return False, r.text
 
@@ -218,7 +239,7 @@ class Socrates:
             response <string>
         """
         r = requests.post(
-            'https://'+self.host+'/'+kwargs['api']+'/_config',
+            self.protocol+'://'+self.host+'/'+kwargs['api']+'/_config',
             headers=self.headers,
             json={"operation": "get", "key": kwargs['key']},
             verify=self.verify
