@@ -7,44 +7,6 @@ import pymongo
 from urllib.parse import quote_plus
 
 
-def log(**kwargs):
-    """
-    Internal, thread-safe logging function with standardized JSON formatting
-    :param kwargs:
-        level <int> [0:4] log message level
-        log_level <int> [0:4] output threshold
-        procedure <string> caller
-        input <string> input to calling procedure
-        message <string> message to log
-    :return:
-        status <bool>
-    """
-    if kwargs['log_level'] >= kwargs['level']:
-        if kwargs['level'] == 0:
-            msg_level = '[EXCEPTION]: '
-        elif kwargs['level'] == 1:
-            msg_level = '[INFO]: '
-        elif kwargs['level'] == 2:
-            msg_level = '[WARN]: '
-        elif kwargs['level'] == 3:
-            msg_level = '[ERROR]: '
-        elif kwargs['level'] == 4:
-            msg_level = '[DEBUG]: '
-        else:
-            msg_level = '[UNDEFINED]'
-        print(json.dumps({
-            "datetime": str(datetime.now()),
-            "level": kwargs['level'],
-            "node": socket.gethostname(),
-            "input": kwargs['input'],
-            "procedure": kwargs['procedure'],
-            "message": msg_level + kwargs['message']
-        }))
-        return True
-    else:
-        return False
-
-
 def connect_to_mongo(**kwargs):
     """
     Connect to mongo in a robust way.
@@ -77,11 +39,13 @@ class Socrates:
         """
         Construct a Socrates HTTP interface object
         :param kwargs:
+            log_level <int> log output threshold level
             host <string> Socrates host
             username <string> Socrates username
             password <string> Socrates password
             verify <bool> SSL verify
         """
+        self.log_level = kwargs['log_level']
         self.host = kwargs['host']
         self.verify = kwargs['verify']
         self.protocol = kwargs['protocol']
@@ -95,6 +59,42 @@ class Socrates:
             self.headers = {'Content-Type': 'application/json', 'Authorization': 'Token ' + str(r.json()['token'])}
         else:
             raise SocratesConnectError({'response': r.text})
+
+    def log(self, **kwargs):
+        """
+        Internal, thread-safe logging function with standardized JSON formatting
+        :param kwargs:
+            level <int> [0:4] log message level
+            procedure <string> caller
+            input <string> input to calling procedure
+            message <string> message to log
+        :return:
+            status <bool>
+        """
+        if self.log_level >= kwargs['level']:
+            if kwargs['level'] == 0:
+                msg_level = '[EXCEPTION]: '
+            elif kwargs['level'] == 1:
+                msg_level = '[INFO]: '
+            elif kwargs['level'] == 2:
+                msg_level = '[WARN]: '
+            elif kwargs['level'] == 3:
+                msg_level = '[ERROR]: '
+            elif kwargs['level'] == 4:
+                msg_level = '[DEBUG]: '
+            else:
+                msg_level = '[UNDEFINED]: '
+            print(json.dumps({
+                "datetime": str(datetime.now()),
+                "level": kwargs['level'],
+                "node": socket.gethostname(),
+                "input": kwargs['input'],
+                "procedure": kwargs['procedure'],
+                "message": msg_level + kwargs['message']
+            }))
+            return True
+        else:
+            return False
 
     def get_definition(self, **kwargs):
         """
@@ -188,19 +188,35 @@ class Socrates:
 
     def get_raw_data(self, **kwargs):
         """
-        Get raw data from given datasource
+        Get raw time-series data from given datasource parameters
         :param kwargs:
             name <string> definition name to get
+            key <string> key for iter_field
             start <string> %Y-%m-%dT%H:%M:%S
             end <string> %Y-%m-%dT%H:%M:%S
         :return:
             status <bool>
             response <string>
         """
+        status, response = self.get_definition(
+            api='archimedes',
+            module='datasource',
+            name=kwargs['name']
+        )
+        if status is True:
+            dd = response
+        else:
+            return False, response
         r = requests.post(
-            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            self.protocol+'://'+self.host+'/archimedes/datasource',
             headers=self.headers,
-            json={"operation": "get", "name": kwargs['name'], 'start': kwargs['start'], 'end': kwargs['end']},
+            json={
+                'operation': 'get',
+                'name': kwargs['name'],
+                dd['iter_field']: kwargs['key'],
+                'start': kwargs['start'],
+                'end': kwargs['end']
+            },
             verify=self.verify
         )
         if r.status_code == 200:
@@ -210,9 +226,29 @@ class Socrates:
 
     def get_thread_iteration_set(self, **kwargs):
         """
-        Get defined set of keys from datasource to parallelize processing
+        Get defined set of keys from configured datasource to parallelize processing
         :param kwargs:
-            name <string> scraper definition name to get
+            name <string> definition name to get
+        :return:
+            status <bool>
+            response <string>
+        """
+        r = requests.post(
+            self.protocol+'://'+self.host+'/archimedes/scraper',
+            headers=self.headers,
+            json={"operation": "get_thread_iteration_set", "name": kwargs['name']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            return False, r.text
+
+    def get_unreviewed_index_records(self, **kwargs):
+        """
+        Get unreviewed index records from given module
+        :param kwargs:
+            name <string> definition name to get
         :return:
             status <bool>
             response <string>
@@ -220,7 +256,7 @@ class Socrates:
         r = requests.post(
             self.protocol+'://'+self.host+'/archimedes/'+kwargs['module'],
             headers=self.headers,
-            json={"operation": "get_thread_iteration_set", "name": kwargs['name']},
+            json={"operation": "get_unreviewed_index_records", "name": kwargs['name']},
             verify=self.verify
         )
         if r.status_code == 200:
