@@ -1,6 +1,7 @@
 import spi
 import sys
 import argparse
+import json
 
 
 if __name__ == '__main__':
@@ -58,7 +59,7 @@ if __name__ == '__main__':
         )
         sys.exit(1)
     else:
-        si_record = response[0]['_id']
+        si_record = json.loads(response['get_unreviewed_index_records'])[0]['_id']
 
     print('passed all tests')
     sys.exit(0)

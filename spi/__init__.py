@@ -198,22 +198,13 @@ class Socrates:
             status <bool>
             response <string>
         """
-        status, response = self.get_definition(
-            api='archimedes',
-            module='datasource',
-            name=kwargs['name']
-        )
-        if status is True:
-            dd = response
-        else:
-            return False, response
         r = requests.post(
             self.protocol+'://'+self.host+'/archimedes/datasource',
             headers=self.headers,
             json={
-                'operation': 'get',
+                'operation': 'get_raw_data',
                 'name': kwargs['name'],
-                dd['iter_field']: kwargs['key'],
+                'key': kwargs['key'],
                 'start': kwargs['start'],
                 'end': kwargs['end']
             },
