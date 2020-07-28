@@ -7,6 +7,7 @@ import pymongo
 from urllib.parse import quote_plus
 
 
+# Probably a case of https://en.wikipedia.org/wiki/Inner-platform_effect since we use these packages internally
 def connect_to_mongo(**kwargs):
     """
     Connect to mongo in a robust way.
