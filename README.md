@@ -5,7 +5,7 @@
 #### Stable
 
 ```bash
-pip install git+https://github.com/jyro-io/spi@0.4.0#egg=spi-0.4.0
+pip install git+https://github.com/jyro-io/spi@0.4.1#egg=spi-0.4.1
 ```
 
 #### Dev

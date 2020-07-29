@@ -229,7 +229,7 @@ class Socrates:
         r = requests.post(
             self.protocol+'://'+self.host+'/archimedes/scraper',
             headers=self.headers,
-            json={"operation": "get_thread_iteration_set", "name": kwargs['name']},
+            json={"operation": "get_iteration_set", "name": kwargs['name']},
             verify=self.verify
         )
         if r.status_code == 200:
