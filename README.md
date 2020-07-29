@@ -5,7 +5,7 @@
 #### Stable
 
 ```bash
-pip install git+https://github.com/jyro-io/spi@0.3.4#egg=spi-0.3.4
+pip install git+https://github.com/jyro-io/spi@0.4.0#egg=spi-0.4.0
 ```
 
 #### Dev
@@ -56,3 +56,5 @@ if status is True:
         ds = response
         ds['database']['collection'].find({})
 ```
+
+See [tests.py](tests.py) for more examples.

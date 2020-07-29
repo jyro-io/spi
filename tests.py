@@ -2,6 +2,8 @@ import spi
 import sys
 import argparse
 import json
+from datetime import datetime
+import time
 
 
 if __name__ == '__main__':
@@ -24,28 +26,67 @@ if __name__ == '__main__':
         print('failed to connect to socrates: ' + str(err))
         sys.exit(1)
 
-    status, response = s.get_raw_data(
-        name='stocks-nasdaq-intraday',
-        key='TSLA',
-        start="2020-03-16T08:00:00",
-        end="2020-03-20T16:00:00"
+    timestamp_format = '%Y-%m-%d %H:%M:%S.%f'
+
+    push_before = datetime.now()
+    status, response = s.push_raw_data(
+        name='test',
+        records=json.dumps([
+            {
+                "test_key": "integration",
+                "timestamp": datetime.now().strftime(timestamp_format)
+            }
+        ])
     )
     if status is False:
         s.log(
             level=3,
-            procedure='tests',
-            input='test_input',
+            procedure='s.push_raw_data',
+            input='test',
+            message='failed to push raw data (str): ' + str(response)
+        )
+        sys.exit(1)
+    status, response = s.push_raw_data(
+        name='test',
+        records=[
+            {
+                "test_key": "integration",
+                "timestamp": datetime.now().strftime(timestamp_format)
+            }
+        ]
+    )
+    if status is False:
+        s.log(
+            level=3,
+            procedure='s.push_raw_data',
+            input='test',
+            message='failed to push raw data (list): ' + str(response)
+        )
+        sys.exit(1)
+    push_after = datetime.now()
+
+    status, response = s.get_raw_data(
+        name='test',
+        key='integration',
+        start=push_before.strftime(timestamp_format),
+        end=push_after.strftime(timestamp_format)
+    )
+    if status is False:
+        s.log(
+            level=3,
+            procedure='s.get_raw_data',
+            input='test',
             message='failed to get raw data: ' + str(response)
         )
         sys.exit(1)
 
-    status, response = s.get_thread_iteration_set(name='stocks-triangle-nasdaq')
+    status, response = s.get_iteration_set(name='stocks-triangle-nasdaq')
     if status is False:
         s.log(
             level=3,
-            procedure='tests',
-            input='test_input',
-            message='failed to get thread iteration set: ' + str(response)
+            procedure='s.get_iteration_set',
+            input='stocks-triangle-nasdaq',
+            message='failed to get iteration set: ' + str(response)
         )
         sys.exit(1)
 
@@ -53,8 +94,8 @@ if __name__ == '__main__':
     if status is False:
         s.log(
             level=3,
-            procedure='tests',
-            input='test_input',
+            procedure='s.get_unreviewed_index_records',
+            input='stocks-triangle-nasdaq',
             message='failed to get unreviewed index records: ' + str(response)
         )
         sys.exit(1)

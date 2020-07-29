@@ -7,6 +7,7 @@ import pymongo
 from urllib.parse import quote_plus
 
 
+# Connect to Mongo in a robuest manner
 # Probably a case of https://en.wikipedia.org/wiki/Inner-platform_effect since we use these packages internally
 def connect_to_mongo(**kwargs):
     """
@@ -38,7 +39,7 @@ class SocratesConnectError(Exception):
 class Socrates:
     def __init__(self, **kwargs):
         """
-        Construct a Socrates HTTP interface object
+        Construct an authenticated Socrates client object
         :param kwargs:
             log_level <int> log output threshold level
             host <string> Socrates host
@@ -216,7 +217,7 @@ class Socrates:
         else:
             return False, r.text
 
-    def get_thread_iteration_set(self, **kwargs):
+    def get_iteration_set(self, **kwargs):
         """
         Get defined set of keys from configured datasource to parallelize processing
         :param kwargs:
@@ -270,6 +271,32 @@ class Socrates:
             self.protocol+'://'+self.host+'/'+kwargs['api']+'/_config',
             headers=self.headers,
             json={"operation": "get", "key": kwargs['key']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            return False, r.text
+
+    def push_raw_data(self, **kwargs):
+        """
+        Push raw time-series data to Archimedes datasource
+        :param kwargs:
+            name <string> definition name to get
+            key <string> key for iter_field
+            records <list> [{},...]
+        :return:
+            status <bool>
+            response <string>
+        """
+        r = requests.post(
+            self.protocol+'://'+self.host+'/archimedes/datasource',
+            headers=self.headers,
+            json={
+                'operation': 'push_raw_data',
+                'name': kwargs['name'],
+                'records': kwargs['records']
+            },
             verify=self.verify
         )
         if r.status_code == 200:
