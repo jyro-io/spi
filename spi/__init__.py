@@ -8,7 +8,7 @@ from urllib.parse import quote_plus
 
 
 # Connect to Mongo in a robuest manner
-# Probably a case of https://en.wikipedia.org/wiki/Inner-platform_effect since we use these packages internally
+# Probably a case of https://en.wikipedia.org/wiki/Inner-platform_effect since we use this internally
 def connect_to_mongo(**kwargs):
     """
     Connect to mongo in a robust way.
