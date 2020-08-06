@@ -3,7 +3,6 @@ import sys
 import argparse
 import json
 from datetime import datetime
-import time
 
 
 if __name__ == '__main__':
