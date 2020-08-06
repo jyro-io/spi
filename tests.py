@@ -1,7 +1,7 @@
 import spi
 import sys
 import argparse
-import json
+import simdjson
 from datetime import datetime
 
 
@@ -30,7 +30,7 @@ if __name__ == '__main__':
     push_before = datetime.now()
     status, response = s.push_raw_data(
         name='test',
-        records=json.dumps([
+        records=simdjson.dumps([
             {
                 "test_key": "integration",
                 "timestamp": datetime.now().strftime(timestamp_format)
@@ -99,7 +99,7 @@ if __name__ == '__main__':
         )
         sys.exit(1)
     else:
-        si_record = json.loads(response['get_unreviewed_index_records'])[0]['_id']
+        si_record = simdjson.loads(response['get_unreviewed_index_records'])[0]['_id']
 
     print('passed all tests')
     sys.exit(0)

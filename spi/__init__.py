@@ -2,12 +2,12 @@ import requests
 from pytprint import print
 from datetime import datetime
 import socket
-import json
+import simdjson
 import pymongo
 from urllib.parse import quote_plus
 
 
-# Connect to Mongo in a robuest manner
+# Connect to Mongo in a robust manner
 # Probably a case of https://en.wikipedia.org/wiki/Inner-platform_effect since we use this internally
 def connect_to_mongo(**kwargs):
     """
@@ -86,7 +86,7 @@ class Socrates:
                 msg_level = '[DEBUG]: '
             else:
                 msg_level = '[UNDEFINED]: '
-            print(json.dumps({
+            print(simdjson.dumps({
                 "datetime": str(datetime.now()),
                 "level": kwargs['level'],
                 "node": socket.gethostname(),
