@@ -5,9 +5,9 @@ from setuptools import setup
 
 setup(
     name='spi',
-    version='1.4.2',
+    version='1.4.3',
     packages=['spi',],
-    license='GNU GPL',
+    license='GPLv3',
     long_description=open('README.md').read(),
     # https://github.com/pypa/setuptools/issues/987#issuecomment-318349568
     install_requires=[
