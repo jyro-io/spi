@@ -19,7 +19,8 @@ if __name__ == '__main__':
             host='localhost',
             username=args.username,
             password=args.password,
-            verify=False
+            verify=False,
+            timeout=5
         )
     except spi.SocratesConnectError as err:
         print('failed to connect to socrates: ' + str(err))

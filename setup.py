@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='spi',
-    version='1.4.3',
+    version='1.5.0',
     packages=['spi',],
     license='GPLv3',
     long_description=open('README.md').read(),
