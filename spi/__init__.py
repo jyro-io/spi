@@ -89,7 +89,7 @@ class Socrates:
             elif kwargs['level'] == 4:
                 msg_level = '[DEBUG]: '
             else:
-                msg_level = '[UNDEFINED]: '
+                msg_level = ''
             print(simdjson.dumps({
                 "datetime": str(datetime.now()),
                 "level": kwargs['level'],
@@ -108,7 +108,7 @@ class Socrates:
         :param kwargs:
             api <string> API to request
             module <string> module within selected api (ie endpoint)
-            name <string> definition name to get
+            name <string> definition name
         :return:
             status <bool>
             response <string>

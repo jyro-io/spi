@@ -1,3 +1,7 @@
+### 1.6.0
+
+* changing `[UNDEFINED]` tag to an empty string `''`
+
 ### 1.4.1
 
 * bumping version to match Socrates API, since this spi is the test interface

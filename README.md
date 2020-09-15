@@ -5,13 +5,13 @@
 #### Stable
 
 ```bash
-pip install git+https://github.com/jyro-io/spi@1.5.0#egg=spi-1.5.0
+pip install git+https://github.com/jyro-io/spi@1.6.0#egg=spi-1.6.0
 ```
 
 #### Dev
 
 ```bash
-pip install git+https://github.com/jyro-io/spi.git@master#egg=spi-dev
+pip install git+https://github.com/jyro-io/spi.git#egg=master
 ```
 
 ### Usage
