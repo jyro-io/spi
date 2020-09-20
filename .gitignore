@@ -3,5 +3,4 @@
 build/
 dist/
 spi.egg-info/
-*.html
 *.pdf
