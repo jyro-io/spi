@@ -80,7 +80,7 @@ if __name__ == '__main__':
         )
         sys.exit(1)
 
-    status, response = s.get_iteration_set(name='triangle-nasdaq')
+    status, response = s.get_iteration_set(name='test')
     if status is False:
         s.log(
             level=3,
@@ -90,12 +90,12 @@ if __name__ == '__main__':
         )
         sys.exit(1)
 
-    status, response = s.get_unreviewed_index_records(module='scraper', name='triangle-nasdaq')
+    status, response = s.get_unreviewed_index_records(module='scraper', name='test')
     if status is False:
         s.log(
             level=3,
             procedure='s.get_unreviewed_index_records',
-            input='triangle-nasdaq',
+            input='test',
             message='failed to get unreviewed index records: ' + str(response)
         )
         sys.exit(1)

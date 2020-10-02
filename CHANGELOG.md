@@ -1,3 +1,7 @@
+### 1.6.1
+
+* updating tests to match new socrates behavior
+
 ### 1.6.0
 
 * changing `[UNDEFINED]` tag to an empty string `''`
