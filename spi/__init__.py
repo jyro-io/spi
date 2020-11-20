@@ -307,3 +307,39 @@ class Socrates:
             return True, r.json()
         else:
             return False, r.text
+
+    def get_cluster_nodes(self):
+        """
+        Get list of nodes in the Socrates cluster
+        :return:
+            status <bool>
+            response <JSON>
+        """
+        r = requests.post(
+            self.protocol+'://'+self.host+'/archimedes/_cluster',
+            headers=self.headers,
+            json={"operation": "get_nodes"},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            return False, r.text
+
+    def get_cluster_services(self):
+        """
+        Get list of services in the Socrates cluster
+        :return:
+            status <bool>
+            response <JSON>
+        """
+        r = requests.post(
+            self.protocol+'://'+self.host+'/archimedes/_cluster',
+            headers=self.headers,
+            json={"operation": "get_services"},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            return False, r.text
