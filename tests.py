@@ -85,7 +85,7 @@ if __name__ == '__main__':
         s.log(
             level=3,
             procedure='s.get_iteration_set',
-            input='triangle-nasdaq',
+            input='test',
             message='failed to get iteration set: ' + str(response)
         )
         sys.exit(1)
