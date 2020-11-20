@@ -316,7 +316,7 @@ class Socrates:
             response <JSON>
         """
         r = requests.post(
-            self.protocol+'://'+self.host+'/archimedes/_cluster',
+            self.protocol+'://'+self.host+'/socrates/_cluster',
             headers=self.headers,
             json={"operation": "get_nodes"},
             verify=self.verify
@@ -334,7 +334,7 @@ class Socrates:
             response <JSON>
         """
         r = requests.post(
-            self.protocol+'://'+self.host+'/archimedes/_cluster',
+            self.protocol+'://'+self.host+'/socrates/_cluster',
             headers=self.headers,
             json={"operation": "get_services"},
             verify=self.verify
