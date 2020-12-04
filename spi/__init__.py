@@ -54,7 +54,7 @@ class Socrates:
         if 'timeout' in kwargs:
             self.timeout = kwargs['timeout']
         else:
-            self.timeout = 10
+            self.timeout = 60
         r = requests.post(
             self.protocol+'://'+self.host+'/auth',
             headers={"Content-Type": "application/json"},
