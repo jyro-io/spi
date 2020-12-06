@@ -1,3 +1,7 @@
+### 1.8.0
+
+* changing get_iteration_set interface to request against the `socrates.archimedes.datasource` module
+
 ### 1.6.1
 
 * updating tests to match new socrates behavior

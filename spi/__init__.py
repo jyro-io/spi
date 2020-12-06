@@ -231,7 +231,7 @@ class Socrates:
             response <string>
         """
         r = requests.post(
-            self.protocol+'://'+self.host+'/archimedes/scraper',
+            self.protocol+'://'+self.host+'/archimedes/datasource',
             headers=self.headers,
             json={"operation": "get_iteration_set", "name": kwargs['name']},
             verify=self.verify
