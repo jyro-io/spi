@@ -5,6 +5,7 @@ import socket
 import simdjson
 import pymongo
 from urllib.parse import quote_plus
+import time
 
 
 # Connect to Mongo in a robust manner
@@ -24,6 +25,7 @@ def connect_to_mongo(**kwargs):
     uri = "mongodb://%s:%s@%s" % (quote_plus(kwargs['username']), quote_plus(kwargs['password']), kwargs['host'])
     try:
         pymongo.write_concern.WriteConcern(w='majority', j=kwargs['j'])
+        pymongo.read_preferences.ReadPreference()
         conn = pymongo.MongoClient(uri)
         # The ismaster command is cheap and does not require auth.
         conn.admin.command('ismaster')
@@ -55,16 +57,17 @@ class Socrates:
             self.timeout = kwargs['timeout']
         else:
             self.timeout = 60
-        r = requests.post(
-            self.protocol+'://'+self.host+'/auth',
-            headers={"Content-Type": "application/json"},
-            json={"username": kwargs['username'], "password": kwargs['password']},
-            verify=kwargs['verify']
-        )
-        if r.status_code == 200:
-            self.headers = {'Content-Type': 'application/json', 'Authorization': 'Token ' + str(r.json()['token'])}
-        else:
-            raise SocratesConnectError({'response': r.text})
+        for i in range(1, self.timeout):
+            r = requests.post(
+                self.protocol+'://'+self.host+'/auth',
+                headers={"Content-Type": "application/json"},
+                json={"username": kwargs['username'], "password": kwargs['password']},
+                verify=kwargs['verify']
+            )
+            if r.status_code == 200:
+                self.headers = {'Content-Type': 'application/json', 'Authorization': 'Token ' + str(r.json()['token'])}
+                break
+            time.sleep(1)
 
     def log(self, **kwargs):
         """
@@ -113,16 +116,17 @@ class Socrates:
             status <bool>
             response <string>
         """
-        r = requests.post(
-            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
-            headers=self.headers,
-            json={"operation": "get", "name": kwargs['name']},
-            verify=self.verify
-        )
-        if r.status_code == 200:
-            return True, r.json()
-        else:
-            return False, r.text
+        for i in range(1, self.timeout):
+            r = requests.post(
+                self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+                headers=self.headers,
+                json={"operation": "get", "name": kwargs['name']},
+                verify=self.verify
+            )
+            if r.status_code == 200:
+                return True, r.json()
+            time.sleep(1)
+        return False, r.text
 
     def add_definition(self, **kwargs):
         """
@@ -136,16 +140,17 @@ class Socrates:
             status <bool>
             response <string>
         """
-        r = requests.post(
-            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
-            headers=self.headers,
-            json={"operation": "add", "name": kwargs['name'], "definition": kwargs['definition']},
-            verify=self.verify
-        )
-        if r.status_code == 200:
-            return True, r.json()
-        else:
-            return False, r.text
+        for i in range(1, self.timeout):
+            r = requests.post(
+                self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+                headers=self.headers,
+                json={"operation": "add", "name": kwargs['name'], "definition": kwargs['definition']},
+                verify=self.verify
+            )
+            if r.status_code == 200:
+                return True, r.json()
+            time.sleep(1)
+        return False, r.text
 
     def update_definition(self, **kwargs):
         """
@@ -159,16 +164,17 @@ class Socrates:
             status <bool>
             response <string>
         """
-        r = requests.post(
-            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
-            headers=self.headers,
-            json={"operation": "update", "name": kwargs['name'], "definition": kwargs['definition']},
-            verify=self.verify
-        )
-        if r.status_code == 200:
-            return True, r.json()
-        else:
-            return False, r.text
+        for i in range(1, self.timeout):
+            r = requests.post(
+                self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+                headers=self.headers,
+                json={"operation": "update", "name": kwargs['name'], "definition": kwargs['definition']},
+                verify=self.verify
+            )
+            if r.status_code == 200:
+                return True, r.json()
+            time.sleep(1)
+        return False, r.text
 
     def delete_definition(self, **kwargs):
         """
@@ -181,45 +187,47 @@ class Socrates:
             status <bool>
             response <string>
         """
-        r = requests.post(
-            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
-            headers=self.headers,
-            json={"operation": "delete", "name": kwargs['name']},
-            verify=self.verify
-        )
-        if r.status_code == 200:
-            return True, r.json()
-        else:
-            return False, r.text
+        for i in range(1, self.timeout):
+            r = requests.post(
+                self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+                headers=self.headers,
+                json={"operation": "delete", "name": kwargs['name']},
+                verify=self.verify
+            )
+            if r.status_code == 200:
+                return True, r.json()
+            time.sleep(1)
+        return False, r.text
 
     def get_raw_data(self, **kwargs):
         """
         Get raw time-series data from given datasource parameters
         :param kwargs:
             name <string> definition name to get
-            key <string> key for iter_field
+            key <string> key for iteration_field
             start <string> %Y-%m-%dT%H:%M:%S
             end <string> %Y-%m-%dT%H:%M:%S
         :return:
             status <bool>
             response <string>
         """
-        r = requests.post(
-            self.protocol+'://'+self.host+'/archimedes/datasource',
-            headers=self.headers,
-            json={
-                'operation': 'get_raw_data',
-                'name': kwargs['name'],
-                'key': kwargs['key'],
-                'start': kwargs['start'],
-                'end': kwargs['end']
-            },
-            verify=self.verify
-        )
-        if r.status_code == 200:
-            return True, r.json()
-        else:
-            return False, r.text
+        for i in range(1, self.timeout):
+            r = requests.post(
+                self.protocol+'://'+self.host+'/archimedes/datasource',
+                headers=self.headers,
+                json={
+                    'operation': 'get_raw_data',
+                    'name': kwargs['name'],
+                    'key': kwargs['key'],
+                    'start': kwargs['start'],
+                    'end': kwargs['end']
+                },
+                verify=self.verify
+            )
+            if r.status_code == 200:
+                return True, r.json()
+            time.sleep(1)
+        return False, r.text
 
     def get_iteration_set(self, **kwargs):
         """
@@ -230,16 +238,17 @@ class Socrates:
             status <bool>
             response <string>
         """
-        r = requests.post(
-            self.protocol+'://'+self.host+'/archimedes/datasource',
-            headers=self.headers,
-            json={"operation": "get_iteration_set", "name": kwargs['name']},
-            verify=self.verify
-        )
-        if r.status_code == 200:
-            return True, r.json()
-        else:
-            return False, r.text
+        for i in range(1, self.timeout):
+            r = requests.post(
+                self.protocol+'://'+self.host+'/archimedes/datasource',
+                headers=self.headers,
+                json={"operation": "get_iteration_set", "name": kwargs['name']},
+                verify=self.verify
+            )
+            if r.status_code == 200:
+                return True, r.json()
+            time.sleep(1)
+        return False, r.text
 
     def get_unreviewed_index_records(self, **kwargs):
         """
@@ -250,16 +259,17 @@ class Socrates:
             status <bool>
             response <string>
         """
-        r = requests.post(
-            self.protocol+'://'+self.host+'/archimedes/'+kwargs['module'],
-            headers=self.headers,
-            json={"operation": "get_unreviewed_index_records", "name": kwargs['name']},
-            verify=self.verify
-        )
-        if r.status_code == 200:
-            return True, r.json()
-        else:
-            return False, r.text
+        for i in range(1, self.timeout):
+            r = requests.post(
+                self.protocol+'://'+self.host+'/archimedes/'+kwargs['module'],
+                headers=self.headers,
+                json={"operation": "get_unreviewed_index_records", "name": kwargs['name']},
+                verify=self.verify
+            )
+            if r.status_code == 200:
+                return True, r.json()
+            time.sleep(1)
+        return False, r.text
 
     def get_config(self, **kwargs):
         """
@@ -271,16 +281,17 @@ class Socrates:
             status <bool>
             response <string>
         """
-        r = requests.post(
-            self.protocol+'://'+self.host+'/'+kwargs['api']+'/_config',
-            headers=self.headers,
-            json={"operation": "get", "key": kwargs['key']},
-            verify=self.verify
-        )
-        if r.status_code == 200:
-            return True, r.json()
-        else:
-            return False, r.text
+        for i in range(1, self.timeout):
+            r = requests.post(
+                self.protocol+'://'+self.host+'/'+kwargs['api']+'/_config',
+                headers=self.headers,
+                json={"operation": "get", "key": kwargs['key']},
+                verify=self.verify
+            )
+            if r.status_code == 200:
+                return True, r.json()
+            time.sleep(1)
+        return False, r.text
 
     def push_raw_data(self, **kwargs):
         """
@@ -293,20 +304,21 @@ class Socrates:
             status <bool>
             response <string>
         """
-        r = requests.post(
-            self.protocol+'://'+self.host+'/archimedes/datasource',
-            headers=self.headers,
-            json={
-                'operation': 'push_raw_data',
-                'name': kwargs['name'],
-                'records': kwargs['records']
-            },
-            verify=self.verify
-        )
-        if r.status_code == 200:
-            return True, r.json()
-        else:
-            return False, r.text
+        for i in range(1, self.timeout):
+            r = requests.post(
+                self.protocol+'://'+self.host+'/archimedes/datasource',
+                headers=self.headers,
+                json={
+                    'operation': 'push_raw_data',
+                    'name': kwargs['name'],
+                    'records': kwargs['records']
+                },
+                verify=self.verify
+            )
+            if r.status_code == 200:
+                return True, r.json()
+            time.sleep(1)
+        return False, r.text
 
     def get_cluster_nodes(self):
         """
@@ -315,16 +327,17 @@ class Socrates:
             status <bool>
             response <JSON>
         """
-        r = requests.post(
-            self.protocol+'://'+self.host+'/socrates/_cluster',
-            headers=self.headers,
-            json={"operation": "get_nodes"},
-            verify=self.verify
-        )
-        if r.status_code == 200:
-            return True, r.json()
-        else:
-            return False, r.text
+        for i in range(1, self.timeout):
+            r = requests.post(
+                self.protocol+'://'+self.host+'/socrates/_cluster',
+                headers=self.headers,
+                json={"operation": "get_nodes"},
+                verify=self.verify
+            )
+            if r.status_code == 200:
+                return True, r.json()
+            time.sleep(1)
+        return False, r.text
 
     def get_cluster_services(self):
         """
@@ -333,13 +346,14 @@ class Socrates:
             status <bool>
             response <JSON>
         """
-        r = requests.post(
-            self.protocol+'://'+self.host+'/socrates/_cluster',
-            headers=self.headers,
-            json={"operation": "get_services"},
-            verify=self.verify
-        )
-        if r.status_code == 200:
-            return True, r.json()
-        else:
-            return False, r.text
+        for i in range(1, self.timeout):
+            r = requests.post(
+                self.protocol+'://'+self.host+'/socrates/_cluster',
+                headers=self.headers,
+                json={"operation": "get_services"},
+                verify=self.verify
+            )
+            if r.status_code == 200:
+                return True, r.json()
+            time.sleep(1)
+        return False, r.text

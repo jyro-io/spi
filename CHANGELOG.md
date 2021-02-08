@@ -1,3 +1,7 @@
+### 1.9.0
+
+* implementing retry mechanisms
+
 ### 1.8.0
 
 * changing get_iteration_set interface to request against the `socrates.archimedes.datasource` module
