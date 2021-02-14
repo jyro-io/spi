@@ -283,7 +283,7 @@ class Socrates:
         for i in range(1, self.timeout):
             try:
                 r = requests.post(
-                    self.protocol+'://'+self.host+'/archimedes/'+kwargs['module'],
+                    self.protocol+'://'+self.host+'/archimedes/scrapeindex',
                     headers=self.headers,
                     json={"operation": "get_unreviewed_index_records", "name": kwargs['name']},
                     verify=self.verify

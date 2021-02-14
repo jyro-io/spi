@@ -1,3 +1,7 @@
+### 1.10.0
+
+* updating get_unreviewed_index_records endpoint to scrapeindex
+
 ### 1.9.0
 
 * implementing retry mechanisms
