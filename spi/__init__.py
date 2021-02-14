@@ -6,6 +6,7 @@ import simdjson
 import pymongo
 from urllib.parse import quote_plus
 import time
+import urllib3
 
 
 # Connect to Mongo in a robust manner
@@ -70,6 +71,8 @@ class Socrates:
                     break
             except requests.ConnectionError:
                 continue
+            except urllib3.exceptions.MaxRetryError:
+                continue
             time.sleep(1)
 
     def log(self, **kwargs):
@@ -131,6 +134,8 @@ class Socrates:
                     return True, r.json()
             except requests.ConnectionError:
                 continue
+            except urllib3.exceptions.MaxRetryError:
+                continue
             time.sleep(1)
         return False, None
 
@@ -157,6 +162,8 @@ class Socrates:
                 if r.status_code == 200:
                     return True, r.json()
             except requests.ConnectionError:
+                continue
+            except urllib3.exceptions.MaxRetryError:
                 continue
             time.sleep(1)
         return False, None
@@ -185,6 +192,8 @@ class Socrates:
                     return True, r.json()
             except requests.ConnectionError:
                 continue
+            except urllib3.exceptions.MaxRetryError:
+                continue
             time.sleep(1)
         return False, None
 
@@ -210,6 +219,8 @@ class Socrates:
                 if r.status_code == 200:
                     return True, r.json()
             except requests.ConnectionError:
+                continue
+            except urllib3.exceptions.MaxRetryError:
                 continue
             time.sleep(1)
         return False, None
@@ -244,6 +255,8 @@ class Socrates:
                     return True, r.json()
             except requests.ConnectionError:
                 continue
+            except urllib3.exceptions.MaxRetryError:
+                continue
             time.sleep(1)
         return False, None
 
@@ -267,6 +280,8 @@ class Socrates:
                 if r.status_code == 200:
                     return True, r.json()
             except requests.ConnectionError:
+                continue
+            except urllib3.exceptions.MaxRetryError:
                 continue
             time.sleep(1)
         return False, None
@@ -292,6 +307,8 @@ class Socrates:
                     return True, r.json()
             except requests.ConnectionError:
                 continue
+            except urllib3.exceptions.MaxRetryError:
+                continue
             time.sleep(1)
         return False, None
 
@@ -316,6 +333,8 @@ class Socrates:
                 if r.status_code == 200:
                     return True, r.json()
             except requests.ConnectionError:
+                continue
+            except urllib3.exceptions.MaxRetryError:
                 continue
             time.sleep(1)
         return False, None
@@ -347,6 +366,8 @@ class Socrates:
                     return True, r.json()
             except requests.ConnectionError:
                 continue
+            except urllib3.exceptions.MaxRetryError:
+                continue
             time.sleep(1)
         return False, None
 
@@ -369,6 +390,8 @@ class Socrates:
                     return True, r.json()
             except requests.ConnectionError:
                 continue
+            except urllib3.exceptions.MaxRetryError:
+                continue
             time.sleep(1)
         return False, None
 
@@ -390,6 +413,8 @@ class Socrates:
                 if r.status_code == 200:
                     return True, r.json()
             except requests.ConnectionError:
+                continue
+            except urllib3.exceptions.MaxRetryError:
                 continue
             time.sleep(1)
         return False, None

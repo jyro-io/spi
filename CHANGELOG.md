@@ -1,3 +1,7 @@
+### 1.11.0
+
+* adding urllib3.exceptions.MaxRetryError to try catch
+
 ### 1.10.0
 
 * updating get_unreviewed_index_records endpoint to scrapeindex
