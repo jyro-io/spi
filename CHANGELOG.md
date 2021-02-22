@@ -1,3 +1,7 @@
+### 1.11.2
+
+* adding urllib3, pysimdjson to setup.py dependencies
+
 ### 1.11.1
 
 * adding urllib3 to imports :(
