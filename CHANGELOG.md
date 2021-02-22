@@ -1,3 +1,7 @@
+### 1.11.1
+
+* adding urllib3 to imports :(
+
 ### 1.11.0
 
 * adding urllib3.exceptions.MaxRetryError to try catch

@@ -2,3 +2,4 @@ git+https://github.com/rory-linehan/pytprint.git@0.2.1#egg=pytprint-0.2.1
 pymongo
 requests
 pysimdjson
+urllib3
