@@ -1,3 +1,7 @@
+### 1.11.3
+
+* fixing requirement pytprint package metadata problem
+
 ### 1.11.2
 
 * adding urllib3, pysimdjson to setup.py dependencies
