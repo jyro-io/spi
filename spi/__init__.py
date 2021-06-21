@@ -10,7 +10,6 @@ import urllib3
 
 
 # Connect to Mongo in a robust manner
-# Probably a case of https://en.wikipedia.org/wiki/Inner-platform_effect since we use this internally
 def connect_to_mongo(**kwargs):
     """
     Connect to mongo in a robust way.
@@ -75,14 +74,15 @@ class Socrates:
                 continue
             time.sleep(1)
 
+    # TODO: deprecate
     def log(self, **kwargs):
         """
         Internal, thread-safe logging function with standardized JSON formatting
         :param kwargs:
             level <int> [0:4] log message level
             procedure <string> caller
-            input <string> input to calling procedure
             message <string> message to log
+            detail <string> details
         :return:
             status <bool>
         """
@@ -141,7 +141,7 @@ class Socrates:
 
     def add_definition(self, **kwargs):
         """
-        Create definition
+        Create various definition types in Socrates
         :param kwargs:
             api <string> API to request
             module <string> module within selected api (ie endpoint)
@@ -170,7 +170,7 @@ class Socrates:
 
     def update_definition(self, **kwargs):
         """
-        Update definition
+        Update various definition types in Socrates
         :param kwargs:
             api <string> API to request
             module <string> module within selected api (ie endpoint)
@@ -199,7 +199,7 @@ class Socrates:
 
     def delete_definition(self, **kwargs):
         """
-        Delete definition
+        Delete various definition types in Socrates
         :param kwargs:
             api <string> API to request
             module <string> module within selected api (ie endpoint)

@@ -1,3 +1,7 @@
+### 1.12.0
+
+* updating log() interface
+
 ### 1.11.3
 
 * fixing requirement pytprint package metadata problem
