@@ -74,7 +74,6 @@ class Socrates:
                 continue
             time.sleep(1)
 
-    # TODO: deprecate
     def log(self, **kwargs):
         """
         Internal, thread-safe logging function with standardized JSON formatting
@@ -102,10 +101,10 @@ class Socrates:
             print(simdjson.dumps({
                 "datetime": str(datetime.now()),
                 "level": kwargs['level'],
-                "node": socket.gethostname(),
-                "input": kwargs['input'],
+                "host": socket.gethostname(),
                 "procedure": kwargs['procedure'],
-                "message": msg_level + kwargs['message']
+                "message": msg_level + kwargs['message'],
+                "detail": kwargs['detail']
             }))
             return True
         else:
