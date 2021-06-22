@@ -11,7 +11,7 @@ pip install git+https://github.com/jyro-io/spi@1.12.0
 #### Dev
 
 ```bash
-pip install git+https://github.com/jyro-io/spi.git#egg=master
+pip install git+https://github.com/jyro-io/spi.git
 ```
 
 ### Usage
