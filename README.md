@@ -5,7 +5,7 @@
 #### Stable
 
 ```bash
-pip install git+https://github.com/jyro-io/spi@1.6.1#egg=spi-1.6.1
+pip install git+https://github.com/jyro-io/spi@1.12.0
 ```
 
 #### Dev
@@ -17,3 +17,9 @@ pip install git+https://github.com/jyro-io/spi.git#egg=master
 ### Usage
 
 See [tests.py](tests.py) for example code.
+
+### Technical notes
+
+There's some weird retry logic in here due to a 
+distributed computing implementation,
+I want to get rid of that but for now it's a relic.
