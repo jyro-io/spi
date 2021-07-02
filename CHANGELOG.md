@@ -1,3 +1,8 @@
+### 1.13.0
+
+* removing level field from logging
+* adding JSON dump to detail field
+
 ### 1.12.0
 
 * updating log() interface
