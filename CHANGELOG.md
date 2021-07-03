@@ -1,3 +1,7 @@
+### 2.0.1
+
+* fixed bug in self.get_unreviewed_index_records
+
 ### 2.0.0
 
 * changed logging interface and implementation

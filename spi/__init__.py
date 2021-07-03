@@ -337,9 +337,13 @@ class Socrates:
         for i in range(1, self.timeout):
             try:
                 r = requests.post(
-                    self.protocol+'://'+self.host+'/archimedes/scrapeindex',
+                    self.protocol+'://'+self.host+'/archimedes/scraper',
                     headers=self.headers,
-                    json={"operation": "get_unreviewed_index_records", "name": kwargs['name']},
+                    json={
+                        "operation": "get_unreviewed_index_records",
+                        "name": kwargs['name'],
+                        "datasource": kwargs['datasource']
+                    },
                     verify=self.verify
                 )
                 if r.status_code == 200:
@@ -349,7 +353,7 @@ class Socrates:
                         level='ERROR',
                         app='spi',
                         procedure='self.get_unreviewed_index_records',
-                        message='failed to get inreviewed index records',
+                        message='failed to get unreviewed index records',
                         detail=str(r.content)
                     )
             except requests.ConnectionError:

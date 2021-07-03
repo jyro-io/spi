@@ -26,7 +26,7 @@ if __name__ == '__main__':
         print('failed to connect to socrates: ' + str(err))
         sys.exit(1)
 
-    timestamp_format = '%Y-%m-%d %H:%M:%S.%f'
+    timestamp_format = '%Y-%m-%d %H:%M:%S'
 
     push_before = datetime.now()
     status, response = s.push_raw_data(
@@ -94,14 +94,14 @@ if __name__ == '__main__':
         )
         sys.exit(1)
 
-    status, response = s.get_unreviewed_index_records(module='scraper', name='test')
+    status, response = s.get_unreviewed_index_records(module='scraper', name='test', datasource='test')
     if status is False:
         s.log(
             level='ERROR',
             app='test',
             procedure='s.get_unreviewed_index_records',
             detail=response,
-            message='failed to get unreviewed index records'
+            message='failed to get unreviewed scrapeindex records'
         )
         sys.exit(1)
     else:
