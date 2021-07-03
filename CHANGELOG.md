@@ -1,3 +1,7 @@
+### 1.15.0
+
+* adding logging
+
 ### 1.14.0
 
 * adding level field to logging

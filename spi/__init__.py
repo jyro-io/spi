@@ -132,6 +132,14 @@ class Socrates:
                 )
                 if r.status_code == 200:
                     return True, r.json()
+                else:
+                    self.log(
+                        level='ERROR',
+                        app='spi',
+                        procedure='self.get_definition',
+                        message='failed to get definition',
+                        detail=r.json()
+                    )
             except requests.ConnectionError:
                 continue
             except urllib3.exceptions.MaxRetryError:
@@ -161,6 +169,14 @@ class Socrates:
                 )
                 if r.status_code == 200:
                     return True, r.json()
+                else:
+                    self.log(
+                        level='ERROR',
+                        app='spi',
+                        procedure='self.add_definition',
+                        message='failed to add definition',
+                        detail=r.json()
+                    )
             except requests.ConnectionError:
                 continue
             except urllib3.exceptions.MaxRetryError:
@@ -190,6 +206,14 @@ class Socrates:
                 )
                 if r.status_code == 200:
                     return True, r.json()
+                else:
+                    self.log(
+                        level='ERROR',
+                        app='spi',
+                        procedure='self.update_definition',
+                        message='failed to update definition',
+                        detail=r.json()
+                    )
             except requests.ConnectionError:
                 continue
             except urllib3.exceptions.MaxRetryError:
@@ -218,6 +242,14 @@ class Socrates:
                 )
                 if r.status_code == 200:
                     return True, r.json()
+                else:
+                    self.log(
+                        level='ERROR',
+                        app='spi',
+                        procedure='self.delete_definition',
+                        message='failed to delete definition',
+                        detail=r.json()
+                    )
             except requests.ConnectionError:
                 continue
             except urllib3.exceptions.MaxRetryError:
@@ -253,6 +285,14 @@ class Socrates:
                 )
                 if r.status_code == 200:
                     return True, r.json()
+                else:
+                    self.log(
+                        level='ERROR',
+                        app='spi',
+                        procedure='self.get_raw_data',
+                        message='failed to get raw data',
+                        detail=r.json()
+                    )
             except requests.ConnectionError:
                 continue
             except urllib3.exceptions.MaxRetryError:
@@ -279,6 +319,14 @@ class Socrates:
                 )
                 if r.status_code == 200:
                     return True, r.json()
+                else:
+                    self.log(
+                        level='ERROR',
+                        app='spi',
+                        procedure='self.get_iteration_set',
+                        message='failed to get iteration set',
+                        detail=r.json()
+                    )
             except requests.ConnectionError:
                 continue
             except urllib3.exceptions.MaxRetryError:
@@ -305,6 +353,14 @@ class Socrates:
                 )
                 if r.status_code == 200:
                     return True, r.json()
+                else:
+                    self.log(
+                        level='ERROR',
+                        app='spi',
+                        procedure='self.get_unreviewed_index_records',
+                        message='failed to get inreviewed index records',
+                        detail=r.json()
+                    )
             except requests.ConnectionError:
                 continue
             except urllib3.exceptions.MaxRetryError:
@@ -332,6 +388,14 @@ class Socrates:
                 )
                 if r.status_code == 200:
                     return True, r.json()
+                else:
+                    self.log(
+                        level='ERROR',
+                        app='spi',
+                        procedure='self.get_config',
+                        message='failed to get config',
+                        detail=r.json()
+                    )
             except requests.ConnectionError:
                 continue
             except urllib3.exceptions.MaxRetryError:
@@ -364,6 +428,14 @@ class Socrates:
                 )
                 if r.status_code == 200:
                     return True, r.json()
+                else:
+                    self.log(
+                        level='ERROR',
+                        app='spi',
+                        procedure='self.push_raw_data',
+                        message='failed to push raw data',
+                        detail=r.json()
+                    )
             except requests.ConnectionError:
                 continue
             except urllib3.exceptions.MaxRetryError:
@@ -388,6 +460,14 @@ class Socrates:
                 )
                 if r.status_code == 200:
                     return True, r.json()
+                else:
+                    self.log(
+                        level='ERROR',
+                        app='spi',
+                        procedure='self.get_cluster_nodes',
+                        message='failed to get cluster nodes',
+                        detail=r.json()
+                    )
             except requests.ConnectionError:
                 continue
             except urllib3.exceptions.MaxRetryError:
@@ -412,6 +492,14 @@ class Socrates:
                 )
                 if r.status_code == 200:
                     return True, r.json()
+                else:
+                    self.log(
+                        level='ERROR',
+                        app='spi',
+                        procedure='self.get_cluster_services',
+                        message='failed to get cluster services',
+                        detail=r.json()
+                    )
             except requests.ConnectionError:
                 continue
             except urllib3.exceptions.MaxRetryError:
