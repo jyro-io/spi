@@ -100,7 +100,8 @@ class Socrates:
                 msg_level = ''
             print(simdjson.dumps({
                 "datetime": str(datetime.now()),
-                #"level": kwargs['level'],
+                "level": kwargs['level'],
+                "app": kwargs['app'],
                 "host": socket.gethostname(),
                 "procedure": kwargs['procedure'],
                 "message": msg_level + kwargs['message'],

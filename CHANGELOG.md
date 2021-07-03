@@ -1,3 +1,8 @@
+### 1.14.0
+
+* adding level field to logging
+* adding app field to logging
+
 ### 1.13.0
 
 * removing level field from logging
