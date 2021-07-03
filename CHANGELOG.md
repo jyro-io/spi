@@ -1,3 +1,7 @@
+### 2.0.4
+
+* removing app field from logging
+
 ### 2.0.3
 
 * removing hostname emission in self.log

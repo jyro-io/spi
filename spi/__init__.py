@@ -79,25 +79,16 @@ class Socrates:
                 continue
             time.sleep(1)
 
-    def log(self, **kwargs):
-        """
-        Internal logging function with standardized JSON formatting
-        :param kwargs:
-            level <str> [EXCEPTION,ERROR,INFO,DEBUG,TRACE] log message level
-            app <str> application name
-            procedure <string> caller
-            message <string> message to log
-            detail <string> details
-        :return:
-            status <bool>
-        """
+    def log(**kwargs):
         print(simdjson.dumps({
             "datetime": str(datetime.now()),
-            "level": kwargs['level'],
-            "app": kwargs['app'],
-            "procedure": kwargs['procedure'],
-            "message": kwargs['message'],
-            "detail": simdjson.dumps(kwargs['detail'])
+            "jyro": {
+                "level": kwargs['level'],
+                "app": "spi",
+                "procedure": kwargs['procedure'],
+                "message": kwargs['message'],
+                "detail": simdjson.dumps(kwargs['detail'])
+            },
         }))
 
     def get_definition(self, **kwargs):
@@ -124,7 +115,6 @@ class Socrates:
                 else:
                     self.log(
                         level='ERROR',
-                        app='spi',
                         procedure='self.get_definition',
                         message='failed to get definition',
                         detail=str(r)
@@ -161,7 +151,6 @@ class Socrates:
                 else:
                     self.log(
                         level='ERROR',
-                        app='spi',
                         procedure='self.add_definition',
                         message='failed to add definition',
                         detail=str(r.content)
@@ -198,7 +187,6 @@ class Socrates:
                 else:
                     self.log(
                         level='ERROR',
-                        app='spi',
                         procedure='self.update_definition',
                         message='failed to update definition',
                         detail=str(r.content)
@@ -234,7 +222,6 @@ class Socrates:
                 else:
                     self.log(
                         level='ERROR',
-                        app='spi',
                         procedure='self.delete_definition',
                         message='failed to delete definition',
                         detail=str(r.content)
@@ -277,7 +264,6 @@ class Socrates:
                 else:
                     self.log(
                         level='ERROR',
-                        app='spi',
                         procedure='self.get_raw_data',
                         message='failed to get raw data',
                         detail=str(r.content)
@@ -311,7 +297,6 @@ class Socrates:
                 else:
                     self.log(
                         level='ERROR',
-                        app='spi',
                         procedure='self.get_iteration_set',
                         message='failed to get iteration set',
                         detail=str(r.content)
@@ -349,7 +334,6 @@ class Socrates:
                 else:
                     self.log(
                         level='ERROR',
-                        app='spi',
                         procedure='self.get_unreviewed_index_records',
                         message='failed to get unreviewed index records',
                         detail=str(r.content)
@@ -384,7 +368,6 @@ class Socrates:
                 else:
                     self.log(
                         level='ERROR',
-                        app='spi',
                         procedure='self.get_config',
                         message='failed to get config',
                         detail=str(r.content)
@@ -424,7 +407,6 @@ class Socrates:
                 else:
                     self.log(
                         level='ERROR',
-                        app='spi',
                         procedure='self.push_raw_data',
                         message='failed to push raw data',
                         detail=str(r.content)
@@ -456,7 +438,6 @@ class Socrates:
                 else:
                     self.log(
                         level='ERROR',
-                        app='spi',
                         procedure='self.get_cluster_nodes',
                         message='failed to get cluster nodes',
                         detail=str(r.content)
@@ -488,7 +469,6 @@ class Socrates:
                 else:
                     self.log(
                         level='ERROR',
-                        app='spi',
                         procedure='self.get_cluster_services',
                         message='failed to get cluster services',
                         detail=str(r.content)
