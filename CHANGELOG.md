@@ -1,3 +1,7 @@
+### 2.0.2
+
+* host -> node
+
 ### 2.0.1
 
 * fixed bug in self.get_unreviewed_index_records

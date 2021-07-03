@@ -82,9 +82,9 @@ class Socrates:
 
     def log(self, **kwargs):
         """
-        Internal, thread-safe logging function with standardized JSON formatting
+        Internal logging function with standardized JSON formatting
         :param kwargs:
-            level <str> [EXCEPTION,INFO,ERROR,DEBUG,TRACE] log message level
+            level <str> [EXCEPTION,ERROR,INFO,DEBUG,TRACE] log message level
             app <str> application name
             procedure <string> caller
             message <string> message to log
@@ -96,7 +96,7 @@ class Socrates:
             "datetime": str(datetime.now()),
             "level": kwargs['level'],
             "app": kwargs['app'],
-            "host": socket.gethostname(),
+            "node": socket.gethostname(),
             "procedure": kwargs['procedure'],
             "message": kwargs['message'],
             "detail": simdjson.dumps(kwargs['detail'])
