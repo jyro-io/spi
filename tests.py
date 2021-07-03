@@ -7,16 +7,16 @@ from datetime import datetime
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='integration test script')
-    parser.add_argument('--log', type=int, help='logging threshold [0-4] (exception,info,warn,error,debug)', required=True)
+    parser.add_argument('--protocol', help='http/s', default='http')
+    parser.add_argument('--host', help='host for socrates', default='localhost')
     parser.add_argument('--username', help='username for socrates', required=True)
     parser.add_argument('--password', help='password for socrates', required=True)
     args = parser.parse_args()
 
     try:
         s = spi.Socrates(
-            log_level=args.log,
-            protocol='http',
-            host='localhost',
+            protocol=args.protocol,
+            host=args.host,
             username=args.username,
             password=args.password,
             verify=False,
@@ -40,10 +40,11 @@ if __name__ == '__main__':
     )
     if status is False:
         s.log(
-            level=3,
+            level='ERROR',
+            app='test',
             procedure='s.push_raw_data',
-            input='test',
-            message='failed to push raw data (str): ' + str(response)
+            detail=response,
+            message='failed to push raw data (str)'
         )
         sys.exit(1)
     status, response = s.push_raw_data(
@@ -57,10 +58,11 @@ if __name__ == '__main__':
     )
     if status is False:
         s.log(
-            level=3,
+            level='ERROR',
+            app='test',
             procedure='s.push_raw_data',
-            input='test',
-            message='failed to push raw data (list): ' + str(response)
+            detail=response,
+            message='failed to push raw data (list)'
         )
         sys.exit(1)
     push_after = datetime.now()
@@ -73,30 +75,33 @@ if __name__ == '__main__':
     )
     if status is False:
         s.log(
-            level=3,
+            level='ERROR',
+            app='test',
             procedure='s.get_raw_data',
-            input='test',
-            message='failed to get raw data: ' + str(response)
+            detail=response,
+            message='failed to get raw data'
         )
         sys.exit(1)
 
     status, response = s.get_iteration_set(name='test')
     if status is False:
         s.log(
-            level=3,
+            level='ERROR',
+            app='test',
             procedure='s.get_iteration_set',
-            input='test',
-            message='failed to get iteration set: ' + str(response)
+            detail=response,
+            message='failed to get iteration set'
         )
         sys.exit(1)
 
     status, response = s.get_unreviewed_index_records(module='scraper', name='test')
     if status is False:
         s.log(
-            level=3,
+            level='ERROR',
+            app='test',
             procedure='s.get_unreviewed_index_records',
-            input='test',
-            message='failed to get unreviewed index records: ' + str(response)
+            detail=response,
+            message='failed to get unreviewed index records'
         )
         sys.exit(1)
     else:

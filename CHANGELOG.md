@@ -1,3 +1,9 @@
+### 2.0.0
+
+* changed logging interface and implementation
+* fixing various problems
+* fixing tests
+
 ### 1.15.0
 
 * adding logging

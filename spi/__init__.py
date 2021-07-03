@@ -43,13 +43,11 @@ class Socrates:
         """
         Construct an authenticated Socrates client object
         :param kwargs:
-            log_level <int> log output threshold level
             host <string> Socrates host
             username <string> Socrates username
             password <string> Socrates password
             verify <bool> SSL verify
         """
-        self.log_level = kwargs['log_level']
         self.host = kwargs['host']
         self.verify = kwargs['verify']
         self.protocol = kwargs['protocol']
@@ -68,6 +66,14 @@ class Socrates:
                 if r.status_code == 200:
                     self.headers = {'Content-Type': 'application/json', 'Authorization': 'Token ' + str(r.json()['token'])}
                     break
+                else:
+                    self.log(
+                        level='ERROR',
+                        app='spi',
+                        procedure='self.__init__',
+                        message='failed to authenticate',
+                        detail=str(r.content)
+                    )
             except requests.ConnectionError:
                 continue
             except urllib3.exceptions.MaxRetryError:
@@ -78,38 +84,23 @@ class Socrates:
         """
         Internal, thread-safe logging function with standardized JSON formatting
         :param kwargs:
-            level <int> [0:4] log message level
+            level <str> [EXCEPTION,INFO,ERROR,DEBUG,TRACE] log message level
+            app <str> application name
             procedure <string> caller
             message <string> message to log
             detail <string> details
         :return:
             status <bool>
         """
-        if self.log_level >= kwargs['level']:
-            if kwargs['level'] == 0:
-                msg_level = '[EXCEPTION]: '
-            elif kwargs['level'] == 1:
-                msg_level = '[INFO]: '
-            elif kwargs['level'] == 2:
-                msg_level = '[WARN]: '
-            elif kwargs['level'] == 3:
-                msg_level = '[ERROR]: '
-            elif kwargs['level'] == 4:
-                msg_level = '[DEBUG]: '
-            else:
-                msg_level = ''
-            print(simdjson.dumps({
-                "datetime": str(datetime.now()),
-                "level": kwargs['level'],
-                "app": kwargs['app'],
-                "host": socket.gethostname(),
-                "procedure": kwargs['procedure'],
-                "message": msg_level + kwargs['message'],
-                "detail": simdjson.dumps(kwargs['detail'])
-            }))
-            return True
-        else:
-            return False
+        print(simdjson.dumps({
+            "datetime": str(datetime.now()),
+            "level": kwargs['level'],
+            "app": kwargs['app'],
+            "host": socket.gethostname(),
+            "procedure": kwargs['procedure'],
+            "message": kwargs['message'],
+            "detail": simdjson.dumps(kwargs['detail'])
+        }))
 
     def get_definition(self, **kwargs):
         """
@@ -138,7 +129,7 @@ class Socrates:
                         app='spi',
                         procedure='self.get_definition',
                         message='failed to get definition',
-                        detail=r.json()
+                        detail=str(r)
                     )
             except requests.ConnectionError:
                 continue
@@ -175,7 +166,7 @@ class Socrates:
                         app='spi',
                         procedure='self.add_definition',
                         message='failed to add definition',
-                        detail=r.json()
+                        detail=str(r.content)
                     )
             except requests.ConnectionError:
                 continue
@@ -212,7 +203,7 @@ class Socrates:
                         app='spi',
                         procedure='self.update_definition',
                         message='failed to update definition',
-                        detail=r.json()
+                        detail=str(r.content)
                     )
             except requests.ConnectionError:
                 continue
@@ -248,7 +239,7 @@ class Socrates:
                         app='spi',
                         procedure='self.delete_definition',
                         message='failed to delete definition',
-                        detail=r.json()
+                        detail=str(r.content)
                     )
             except requests.ConnectionError:
                 continue
@@ -291,7 +282,7 @@ class Socrates:
                         app='spi',
                         procedure='self.get_raw_data',
                         message='failed to get raw data',
-                        detail=r.json()
+                        detail=str(r.content)
                     )
             except requests.ConnectionError:
                 continue
@@ -325,7 +316,7 @@ class Socrates:
                         app='spi',
                         procedure='self.get_iteration_set',
                         message='failed to get iteration set',
-                        detail=r.json()
+                        detail=str(r.content)
                     )
             except requests.ConnectionError:
                 continue
@@ -359,7 +350,7 @@ class Socrates:
                         app='spi',
                         procedure='self.get_unreviewed_index_records',
                         message='failed to get inreviewed index records',
-                        detail=r.json()
+                        detail=str(r.content)
                     )
             except requests.ConnectionError:
                 continue
@@ -394,7 +385,7 @@ class Socrates:
                         app='spi',
                         procedure='self.get_config',
                         message='failed to get config',
-                        detail=r.json()
+                        detail=str(r.content)
                     )
             except requests.ConnectionError:
                 continue
@@ -434,7 +425,7 @@ class Socrates:
                         app='spi',
                         procedure='self.push_raw_data',
                         message='failed to push raw data',
-                        detail=r.json()
+                        detail=str(r.content)
                     )
             except requests.ConnectionError:
                 continue
@@ -466,7 +457,7 @@ class Socrates:
                         app='spi',
                         procedure='self.get_cluster_nodes',
                         message='failed to get cluster nodes',
-                        detail=r.json()
+                        detail=str(r.content)
                     )
             except requests.ConnectionError:
                 continue
@@ -498,7 +489,7 @@ class Socrates:
                         app='spi',
                         procedure='self.get_cluster_services',
                         message='failed to get cluster services',
-                        detail=r.json()
+                        detail=str(r.content)
                     )
             except requests.ConnectionError:
                 continue
