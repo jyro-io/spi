@@ -1,3 +1,7 @@
+### 2.0.3
+
+* removing hostname emission in self.log
+
 ### 2.0.2
 
 * host -> node

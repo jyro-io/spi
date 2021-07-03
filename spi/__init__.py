@@ -1,7 +1,6 @@
 import requests
 from pytprint import print
 from datetime import datetime
-import socket
 import simdjson
 import pymongo
 from urllib.parse import quote_plus
@@ -96,7 +95,6 @@ class Socrates:
             "datetime": str(datetime.now()),
             "level": kwargs['level'],
             "app": kwargs['app'],
-            "node": socket.gethostname(),
             "procedure": kwargs['procedure'],
             "message": kwargs['message'],
             "detail": simdjson.dumps(kwargs['detail'])
