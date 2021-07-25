@@ -88,7 +88,7 @@ class Socrates:
                 "procedure": kwargs['procedure'],
                 "message": kwargs['message'],
                 "detail": simdjson.dumps(kwargs['detail'])
-            },
+            }
         }))
 
     def get_definition(self, **kwargs):
