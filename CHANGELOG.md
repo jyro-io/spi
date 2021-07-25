@@ -1,3 +1,7 @@
+### 2.0.5
+
+* bugfix: TypeError: log() takes 0 positional arguments but 1 was given
+
 ### 2.0.4
 
 * removing app field from logging

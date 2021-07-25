@@ -42,6 +42,7 @@ class Socrates:
         """
         Construct an authenticated Socrates client object
         :param kwargs:
+            protocol <string> HTTP/S
             host <string> Socrates host
             username <string> Socrates username
             password <string> Socrates password
@@ -68,7 +69,6 @@ class Socrates:
                 else:
                     self.log(
                         level='ERROR',
-                        app='spi',
                         procedure='self.__init__',
                         message='failed to authenticate',
                         detail=str(r.content)
