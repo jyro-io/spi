@@ -1,3 +1,7 @@
+### 2.1.0
+
+* removing retry logic
+
 ### 2.0.5
 
 * bugfix: TypeError: log() takes 0 positional arguments but 1 was given

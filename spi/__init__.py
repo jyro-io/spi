@@ -4,8 +4,6 @@ from datetime import datetime
 import simdjson
 import pymongo
 from urllib.parse import quote_plus
-import time
-import urllib3
 
 
 # Connect to Mongo in a robust manner
@@ -51,35 +49,23 @@ class Socrates:
         self.host = kwargs['host']
         self.verify = kwargs['verify']
         self.protocol = kwargs['protocol']
-        if 'timeout' in kwargs:
-            self.timeout = kwargs['timeout']
+        r = requests.post(
+            self.protocol+'://'+self.host+'/auth',
+            headers={"Content-Type": "application/json"},
+            json={"username": kwargs['username'], "password": kwargs['password']},
+            verify=kwargs['verify']
+        )
+        if r.status_code == 200:
+            self.headers = {'Content-Type': 'application/json', 'Authorization': 'Token ' + str(r.json()['token'])}
         else:
-            self.timeout = 60
-        for i in range(1, self.timeout):
-            try:
-                r = requests.post(
-                    self.protocol+'://'+self.host+'/auth',
-                    headers={"Content-Type": "application/json"},
-                    json={"username": kwargs['username'], "password": kwargs['password']},
-                    verify=kwargs['verify']
-                )
-                if r.status_code == 200:
-                    self.headers = {'Content-Type': 'application/json', 'Authorization': 'Token ' + str(r.json()['token'])}
-                    break
-                else:
-                    self.log(
-                        level='ERROR',
-                        procedure='self.__init__',
-                        message='failed to authenticate',
-                        detail=str(r.content)
-                    )
-            except requests.ConnectionError:
-                continue
-            except urllib3.exceptions.MaxRetryError:
-                continue
-            time.sleep(1)
+            self.log(
+                level='ERROR',
+                procedure='self.__init__',
+                message='failed to authenticate',
+                detail=str(r.content)
+            )
 
-    def log(**kwargs):
+    def log(self, **kwargs):
         print(simdjson.dumps({
             "datetime": str(datetime.now()),
             "jyro": {
@@ -102,29 +88,22 @@ class Socrates:
             status <bool>
             response <string>
         """
-        for i in range(1, self.timeout):
-            try:
-                r = requests.post(
-                    self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
-                    headers=self.headers,
-                    json={"operation": "get", "name": kwargs['name']},
-                    verify=self.verify
-                )
-                if r.status_code == 200:
-                    return True, r.json()
-                else:
-                    self.log(
-                        level='ERROR',
-                        procedure='self.get_definition',
-                        message='failed to get definition',
-                        detail=str(r)
-                    )
-            except requests.ConnectionError:
-                continue
-            except urllib3.exceptions.MaxRetryError:
-                continue
-            time.sleep(1)
-        return False, None
+        r = requests.post(
+            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            headers=self.headers,
+            json={"operation": "get", "name": kwargs['name']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            self.log(
+                level='ERROR',
+                procedure='self.get_definition',
+                message='failed to get definition',
+                detail=str(r)
+            )
+            return False, None
 
     def add_definition(self, **kwargs):
         """
@@ -138,29 +117,22 @@ class Socrates:
             status <bool>
             response <string>
         """
-        for i in range(1, self.timeout):
-            try:
-                r = requests.post(
-                    self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
-                    headers=self.headers,
-                    json={"operation": "add", "name": kwargs['name'], "definition": kwargs['definition']},
-                    verify=self.verify
-                )
-                if r.status_code == 200:
-                    return True, r.json()
-                else:
-                    self.log(
-                        level='ERROR',
-                        procedure='self.add_definition',
-                        message='failed to add definition',
-                        detail=str(r.content)
-                    )
-            except requests.ConnectionError:
-                continue
-            except urllib3.exceptions.MaxRetryError:
-                continue
-            time.sleep(1)
-        return False, None
+        r = requests.post(
+            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            headers=self.headers,
+            json={"operation": "add", "name": kwargs['name'], "definition": kwargs['definition']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            self.log(
+                level='ERROR',
+                procedure='self.add_definition',
+                message='failed to add definition',
+                detail=str(r.content)
+            )
+            return False, None
 
     def update_definition(self, **kwargs):
         """
@@ -174,29 +146,22 @@ class Socrates:
             status <bool>
             response <string>
         """
-        for i in range(1, self.timeout):
-            try:
-                r = requests.post(
-                    self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
-                    headers=self.headers,
-                    json={"operation": "update", "name": kwargs['name'], "definition": kwargs['definition']},
-                    verify=self.verify
-                )
-                if r.status_code == 200:
-                    return True, r.json()
-                else:
-                    self.log(
-                        level='ERROR',
-                        procedure='self.update_definition',
-                        message='failed to update definition',
-                        detail=str(r.content)
-                    )
-            except requests.ConnectionError:
-                continue
-            except urllib3.exceptions.MaxRetryError:
-                continue
-            time.sleep(1)
-        return False, None
+        r = requests.post(
+            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            headers=self.headers,
+            json={"operation": "update", "name": kwargs['name'], "definition": kwargs['definition']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            self.log(
+                level='ERROR',
+                procedure='self.update_definition',
+                message='failed to update definition',
+                detail=str(r.content)
+            )
+            return False, None
 
     def delete_definition(self, **kwargs):
         """
@@ -209,29 +174,22 @@ class Socrates:
             status <bool>
             response <string>
         """
-        for i in range(1, self.timeout):
-            try:
-                r = requests.post(
-                    self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
-                    headers=self.headers,
-                    json={"operation": "delete", "name": kwargs['name']},
-                    verify=self.verify
-                )
-                if r.status_code == 200:
-                    return True, r.json()
-                else:
-                    self.log(
-                        level='ERROR',
-                        procedure='self.delete_definition',
-                        message='failed to delete definition',
-                        detail=str(r.content)
-                    )
-            except requests.ConnectionError:
-                continue
-            except urllib3.exceptions.MaxRetryError:
-                continue
-            time.sleep(1)
-        return False, None
+        r = requests.post(
+            self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+            headers=self.headers,
+            json={"operation": "delete", "name": kwargs['name']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            self.log(
+                level='ERROR',
+                procedure='self.delete_definition',
+                message='failed to delete definition',
+                detail=str(r.content)
+            )
+            return False, None
 
     def get_raw_data(self, **kwargs):
         """
@@ -245,35 +203,28 @@ class Socrates:
             status <bool>
             response <string>
         """
-        for i in range(1, self.timeout):
-            try:
-                r = requests.post(
-                    self.protocol+'://'+self.host+'/archimedes/datasource',
-                    headers=self.headers,
-                    json={
-                        'operation': 'get_raw_data',
-                        'name': kwargs['name'],
-                        'key': kwargs['key'],
-                        'start': kwargs['start'],
-                        'end': kwargs['end']
-                    },
-                    verify=self.verify
-                )
-                if r.status_code == 200:
-                    return True, r.json()
-                else:
-                    self.log(
-                        level='ERROR',
-                        procedure='self.get_raw_data',
-                        message='failed to get raw data',
-                        detail=str(r.content)
-                    )
-            except requests.ConnectionError:
-                continue
-            except urllib3.exceptions.MaxRetryError:
-                continue
-            time.sleep(1)
-        return False, None
+        r = requests.post(
+            self.protocol+'://'+self.host+'/archimedes/datasource',
+            headers=self.headers,
+            json={
+                'operation': 'get_raw_data',
+                'name': kwargs['name'],
+                'key': kwargs['key'],
+                'start': kwargs['start'],
+                'end': kwargs['end']
+            },
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            self.log(
+                level='ERROR',
+                procedure='self.get_raw_data',
+                message='failed to get raw data',
+                detail=str(r.content)
+            )
+            return False, None
 
     def get_iteration_set(self, **kwargs):
         """
@@ -284,29 +235,22 @@ class Socrates:
             status <bool>
             response <string>
         """
-        for i in range(1, self.timeout):
-            try:
-                r = requests.post(
-                    self.protocol+'://'+self.host+'/archimedes/datasource',
-                    headers=self.headers,
-                    json={"operation": "get_iteration_set", "name": kwargs['name']},
-                    verify=self.verify
-                )
-                if r.status_code == 200:
-                    return True, r.json()
-                else:
-                    self.log(
-                        level='ERROR',
-                        procedure='self.get_iteration_set',
-                        message='failed to get iteration set',
-                        detail=str(r.content)
-                    )
-            except requests.ConnectionError:
-                continue
-            except urllib3.exceptions.MaxRetryError:
-                continue
-            time.sleep(1)
-        return False, None
+        r = requests.post(
+            self.protocol+'://'+self.host+'/archimedes/datasource',
+            headers=self.headers,
+            json={"operation": "get_iteration_set", "name": kwargs['name']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            self.log(
+                level='ERROR',
+                procedure='self.get_iteration_set',
+                message='failed to get iteration set',
+                detail=str(r.content)
+            )
+            return False, None
 
     def get_unreviewed_index_records(self, **kwargs):
         """
@@ -317,33 +261,26 @@ class Socrates:
             status <bool>
             response <string>
         """
-        for i in range(1, self.timeout):
-            try:
-                r = requests.post(
-                    self.protocol+'://'+self.host+'/archimedes/scraper',
-                    headers=self.headers,
-                    json={
-                        "operation": "get_unreviewed_index_records",
-                        "name": kwargs['name'],
-                        "datasource": kwargs['datasource']
-                    },
-                    verify=self.verify
-                )
-                if r.status_code == 200:
-                    return True, r.json()
-                else:
-                    self.log(
-                        level='ERROR',
-                        procedure='self.get_unreviewed_index_records',
-                        message='failed to get unreviewed index records',
-                        detail=str(r.content)
-                    )
-            except requests.ConnectionError:
-                continue
-            except urllib3.exceptions.MaxRetryError:
-                continue
-            time.sleep(1)
-        return False, None
+        r = requests.post(
+            self.protocol+'://'+self.host+'/archimedes/scraper',
+            headers=self.headers,
+            json={
+                "operation": "get_unreviewed_index_records",
+                "name": kwargs['name'],
+                "datasource": kwargs['datasource']
+            },
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            self.log(
+                level='ERROR',
+                procedure='self.get_unreviewed_index_records',
+                message='failed to get unreviewed index records',
+                detail=str(r.content)
+            )
+            return False, None
 
     def get_config(self, **kwargs):
         """
@@ -355,29 +292,22 @@ class Socrates:
             status <bool>
             response <string>
         """
-        for i in range(1, self.timeout):
-            try:
-                r = requests.post(
-                    self.protocol+'://'+self.host+'/'+kwargs['api']+'/_config',
-                    headers=self.headers,
-                    json={"operation": "get", "key": kwargs['key']},
-                    verify=self.verify
-                )
-                if r.status_code == 200:
-                    return True, r.json()
-                else:
-                    self.log(
-                        level='ERROR',
-                        procedure='self.get_config',
-                        message='failed to get config',
-                        detail=str(r.content)
-                    )
-            except requests.ConnectionError:
-                continue
-            except urllib3.exceptions.MaxRetryError:
-                continue
-            time.sleep(1)
-        return False, None
+        r = requests.post(
+            self.protocol+'://'+self.host+'/'+kwargs['api']+'/_config',
+            headers=self.headers,
+            json={"operation": "get", "key": kwargs['key']},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            self.log(
+                level='ERROR',
+                procedure='self.get_config',
+                message='failed to get config',
+                detail=str(r.content)
+            )
+            return False, None
 
     def push_raw_data(self, **kwargs):
         """
@@ -390,33 +320,26 @@ class Socrates:
             status <bool>
             response <string>
         """
-        for i in range(1, self.timeout):
-            try:
-                r = requests.post(
-                    self.protocol+'://'+self.host+'/archimedes/datasource',
-                    headers=self.headers,
-                    json={
-                        'operation': 'push_raw_data',
-                        'name': kwargs['name'],
-                        'records': kwargs['records']
-                    },
-                    verify=self.verify
-                )
-                if r.status_code == 200:
-                    return True, r.json()
-                else:
-                    self.log(
-                        level='ERROR',
-                        procedure='self.push_raw_data',
-                        message='failed to push raw data',
-                        detail=str(r.content)
-                    )
-            except requests.ConnectionError:
-                continue
-            except urllib3.exceptions.MaxRetryError:
-                continue
-            time.sleep(1)
-        return False, None
+        r = requests.post(
+            self.protocol+'://'+self.host+'/archimedes/datasource',
+            headers=self.headers,
+            json={
+                'operation': 'push_raw_data',
+                'name': kwargs['name'],
+                'records': kwargs['records']
+            },
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            self.log(
+                level='ERROR',
+                procedure='self.push_raw_data',
+                message='failed to push raw data',
+                detail=str(r.content)
+            )
+            return False, None
 
     def get_cluster_nodes(self):
         """
@@ -425,29 +348,22 @@ class Socrates:
             status <bool>
             response <JSON>
         """
-        for i in range(1, self.timeout):
-            try:
-                r = requests.post(
-                    self.protocol+'://'+self.host+'/socrates/_cluster',
-                    headers=self.headers,
-                    json={"operation": "get_nodes"},
-                    verify=self.verify
-                )
-                if r.status_code == 200:
-                    return True, r.json()
-                else:
-                    self.log(
-                        level='ERROR',
-                        procedure='self.get_cluster_nodes',
-                        message='failed to get cluster nodes',
-                        detail=str(r.content)
-                    )
-            except requests.ConnectionError:
-                continue
-            except urllib3.exceptions.MaxRetryError:
-                continue
-            time.sleep(1)
-        return False, None
+        r = requests.post(
+            self.protocol+'://'+self.host+'/socrates/_cluster',
+            headers=self.headers,
+            json={"operation": "get_nodes"},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            self.log(
+                level='ERROR',
+                procedure='self.get_cluster_nodes',
+                message='failed to get cluster nodes',
+                detail=str(r.content)
+            )
+            return False, None
 
     def get_cluster_services(self):
         """
@@ -456,26 +372,19 @@ class Socrates:
             status <bool>
             response <JSON>
         """
-        for i in range(1, self.timeout):
-            try:
-                r = requests.post(
-                    self.protocol+'://'+self.host+'/socrates/_cluster',
-                    headers=self.headers,
-                    json={"operation": "get_services"},
-                    verify=self.verify
-                )
-                if r.status_code == 200:
-                    return True, r.json()
-                else:
-                    self.log(
-                        level='ERROR',
-                        procedure='self.get_cluster_services',
-                        message='failed to get cluster services',
-                        detail=str(r.content)
-                    )
-            except requests.ConnectionError:
-                continue
-            except urllib3.exceptions.MaxRetryError:
-                continue
-            time.sleep(1)
-        return False, None
+        r = requests.post(
+            self.protocol+'://'+self.host+'/socrates/_cluster',
+            headers=self.headers,
+            json={"operation": "get_services"},
+            verify=self.verify
+        )
+        if r.status_code == 200:
+            return True, r.json()
+        else:
+            self.log(
+                level='ERROR',
+                procedure='self.get_cluster_services',
+                message='failed to get cluster services',
+                detail=str(r.content)
+            )
+            return False, None

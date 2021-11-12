@@ -8,7 +8,7 @@ from datetime import datetime
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='integration test script')
     parser.add_argument('--protocol', help='http/s', default='http')
-    parser.add_argument('--host', help='host for socrates', default='localhost')
+    parser.add_argument('--host', help='host for socrates', default='socrates')
     parser.add_argument('--username', help='username for socrates', required=True)
     parser.add_argument('--password', help='password for socrates', required=True)
     args = parser.parse_args()
@@ -19,8 +19,7 @@ if __name__ == '__main__':
             host=args.host,
             username=args.username,
             password=args.password,
-            verify=False,
-            timeout=5
+            verify=False
         )
     except spi.SocratesConnectError as err:
         print('failed to connect to socrates: ' + str(err))
@@ -33,7 +32,7 @@ if __name__ == '__main__':
         name='test',
         records=simdjson.dumps([
             {
-                "test_key": "integration",
+                "test_iter_field": "integration",
                 "timestamp": datetime.now().strftime(timestamp_format)
             }
         ])
@@ -51,7 +50,7 @@ if __name__ == '__main__':
         name='test',
         records=[
             {
-                "test_key": "integration",
+                "test_iter_field": "integration",
                 "timestamp": datetime.now().strftime(timestamp_format)
             }
         ]
