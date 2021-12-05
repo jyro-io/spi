@@ -1,3 +1,8 @@
+### 3.0.0
+
+* improved error handling
+* removing self.log()
+
 ### 2.1.0
 
 * removing retry logic

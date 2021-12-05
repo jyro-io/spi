@@ -38,13 +38,6 @@ if __name__ == '__main__':
         ])
     )
     if status is False:
-        s.log(
-            level='ERROR',
-            app='test',
-            procedure='s.push_raw_data',
-            detail=response,
-            message='failed to push raw data (str)'
-        )
         sys.exit(1)
     status, response = s.push_raw_data(
         name='test',
@@ -56,13 +49,7 @@ if __name__ == '__main__':
         ]
     )
     if status is False:
-        s.log(
-            level='ERROR',
-            app='test',
-            procedure='s.push_raw_data',
-            detail=response,
-            message='failed to push raw data (list)'
-        )
+        print('failed to push raw data (list)')
         sys.exit(1)
     push_after = datetime.now()
 
@@ -73,35 +60,17 @@ if __name__ == '__main__':
         end=push_after.strftime(timestamp_format)
     )
     if status is False:
-        s.log(
-            level='ERROR',
-            app='test',
-            procedure='s.get_raw_data',
-            detail=response,
-            message='failed to get raw data'
-        )
+        print('failed to get raw data')
         sys.exit(1)
 
     status, response = s.get_iteration_set(name='test')
     if status is False:
-        s.log(
-            level='ERROR',
-            app='test',
-            procedure='s.get_iteration_set',
-            detail=response,
-            message='failed to get iteration set'
-        )
+        print('failed to get iteration set')
         sys.exit(1)
 
     status, response = s.get_unreviewed_index_records(module='scraper', name='test', datasource='test')
     if status is False:
-        s.log(
-            level='ERROR',
-            app='test',
-            procedure='s.get_unreviewed_index_records',
-            detail=response,
-            message='failed to get unreviewed scrapeindex records'
-        )
+        print('failed to get unreviewed scrapeindex records')
         sys.exit(1)
     else:
         si_record = simdjson.loads(response['get_unreviewed_index_records'])[0]['_id']
