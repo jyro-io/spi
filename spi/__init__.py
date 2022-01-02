@@ -174,17 +174,23 @@ class Socrates:
             status <bool>
             response <string>
         """
+        jsonBody = {
+            'operation': 'get_raw_data',
+            'name': kwargs['name'],
+            'start': kwargs['start'],
+            'end': kwargs['end']
+        }
+        if 'key' in kwargs:
+            jsonBody['key'] = kwargs['key']
+        elif 'topic' in kwargs:
+            jsonBody['topic'] = kwargs['topic']
+        else:
+            return False, {"error": "expecting 'key' or 'topic' in kwargs"}
         try:
             r = requests.post(
                 self.protocol+'://'+self.host+'/archimedes/datasource',
                 headers=self.headers,
-                json={
-                    'operation': 'get_raw_data',
-                    'name': kwargs['name'],
-                    'key': kwargs['key'],
-                    'start': kwargs['start'],
-                    'end': kwargs['end']
-                },
+                json=jsonBody,
                 verify=self.verify
             )
             if r.status_code == 200:

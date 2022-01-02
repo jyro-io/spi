@@ -1,3 +1,7 @@
+### 3.1.0
+
+* updating get_raw_data() interface
+
 ### 3.0.0
 
 * improved error handling
