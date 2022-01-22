@@ -5,7 +5,7 @@
 #### Stable
 
 ```bash
-pip install git+https://github.com/jyro-io/spi@2.1.0
+pip install git+https://github.com/jyro-io/spi@3.1.1
 ```
 
 ### Usage
