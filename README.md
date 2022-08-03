@@ -2,8 +2,6 @@
 
 ### Install
 
-#### Stable
-
 ```bash
 pip install git+https://github.com/jyro-io/spi@3.1.1
 ```
