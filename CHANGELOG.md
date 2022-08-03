@@ -1,3 +1,8 @@
+### 3.1.2
+
+* update test defaults
+* cleanup
+
 ### 3.1.1
 
 * 4 -> 2 spaces

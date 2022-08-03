@@ -1,7 +1,4 @@
 import requests
-from pytprint import print
-from datetime import datetime
-import simdjson
 import pymongo
 from urllib.parse import quote_plus
 

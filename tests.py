@@ -7,8 +7,8 @@ from datetime import datetime
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='integration test script')
-  parser.add_argument('--protocol', help='http/s', default='http')
-  parser.add_argument('--host', help='host for socrates', default='socrates')
+  parser.add_argument('--protocol', help='http/s', default='https')
+  parser.add_argument('--host', help='host for socrates', default='api.jyro.io')
   parser.add_argument('--username', help='username for socrates', required=True)
   parser.add_argument('--password', help='password for socrates', required=True)
   args = parser.parse_args()
