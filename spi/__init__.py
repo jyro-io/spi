@@ -17,7 +17,7 @@ def connect_to_mongo(**kwargs):
       status <bool>
       response <string>
   """
-  if 'replicaset_name' in kwargs:
+  if 'replicaset' in kwargs:
     uri = "mongodb://%s:%s@%s/?authSource=admin&tls=false&readPreference=secondary&serverSelectionTryOnce=false&replicaSet=%s" % \
           (quote_plus(kwargs['username']), quote_plus(kwargs['password']), kwargs['host'], kwargs['replicaset'])
   else:
