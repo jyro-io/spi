@@ -12,14 +12,14 @@ def connect_to_mongo(**kwargs):
       username <string> mongo username
       password <string> mongo password
       j <bool> request acknowledgment that the write operation has been written to the on-disk journal
-      replicaset <string> replicaset name
+      options <string> uri options
   :return:
       status <bool>
       response <string>
   """
   if 'replicaset' in kwargs:
-    uri = "mongodb://%s:%s@%s/?authSource=admin&tls=false&readPreference=secondary&serverSelectionTryOnce=false&replicaSet=%s" % \
-          (quote_plus(kwargs['username']), quote_plus(kwargs['password']), kwargs['host'], kwargs['replicaset'])
+    uri = "mongodb://%s:%s@%s/%s" % \
+          (quote_plus(kwargs['username']), quote_plus(kwargs['password']), kwargs['host'], kwargs['options'])
   else:
     uri = "mongodb://%s:%s@%s" % (quote_plus(kwargs['username']), quote_plus(kwargs['password']), kwargs['host'])
   try:
