@@ -12,11 +12,16 @@ def connect_to_mongo(**kwargs):
       username <string> mongo username
       password <string> mongo password
       j <bool> request acknowledgment that the write operation has been written to the on-disk journal
+      replicaset <string> replicaset name
   :return:
       status <bool>
       response <string>
   """
-  uri = "mongodb://%s:%s@%s" % (quote_plus(kwargs['username']), quote_plus(kwargs['password']), kwargs['host'])
+  if 'replicaset_name' in kwargs:
+    uri = "mongodb://%s:%s@%s/?authSource=admin&tls=false&readPreference=secondary&serverSelectionTryOnce=false&replicaSet=%s" % \
+          (quote_plus(kwargs['username']), quote_plus(kwargs['password']), kwargs['host'], kwargs['replicaset'])
+  else:
+    uri = "mongodb://%s:%s@%s" % (quote_plus(kwargs['username']), quote_plus(kwargs['password']), kwargs['host'])
   try:
     pymongo.write_concern.WriteConcern(w='majority', j=kwargs['j'])
     pymongo.read_preferences.ReadPreference()

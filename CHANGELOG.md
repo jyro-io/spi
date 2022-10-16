@@ -1,3 +1,7 @@
+### 3.1.3
+
+* mongodb replicaset connection
+
 ### 3.1.2
 
 * update test defaults
