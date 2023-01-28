@@ -74,7 +74,7 @@ class Socrates:
         response <string>
     """
     try:
-      if kwargs['name']:
+      if 'name' in kwargs:
         r = requests.post(
           self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
           headers=self.headers,
