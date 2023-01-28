@@ -68,18 +68,26 @@ class Socrates:
     :param kwargs:
         api <string> API to request
         module <string> module within selected api (ie endpoint)
-        name <string> definition name
+        name <string> definition name, if not given then return all datasources
     :return:
         status <bool>
         response <string>
     """
     try:
-      r = requests.post(
-        self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
-        headers=self.headers,
-        json={"operation": "get", "name": kwargs['name']},
-        verify=self.verify
-      )
+      if kwargs['name']:
+        r = requests.post(
+          self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+          headers=self.headers,
+          json={"operation": "get", "name": kwargs['name']},
+          verify=self.verify
+        )
+      else:
+        r = requests.post(
+          self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
+          headers=self.headers,
+          json={"operation": "get"},
+          verify=self.verify
+        )
       if r.status_code == 200:
         return True, r.json()
       else:
