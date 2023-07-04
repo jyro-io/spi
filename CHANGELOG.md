@@ -1,3 +1,7 @@
+### 3.3.0
+
+* add get_ohlc_interval()
+
 ### 3.2.0
 
 * mongodb

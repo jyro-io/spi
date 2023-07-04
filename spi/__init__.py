@@ -1,6 +1,7 @@
 import requests
 import pymongo
 from urllib.parse import quote_plus
+import datetime
 
 
 # Connect to Mongo in a robust manner
@@ -354,3 +355,14 @@ class Socrates:
         return False, {"error": str(r.content)}
     except requests.exceptions.ConnectionError:
       return False, {"error": "connection error"}
+
+  def get_ohlc_interval(self, interval, unit):
+    if "m" == unit:
+      interval = datetime.timedelta(minutes=interval)
+    elif "h" == unit:
+      interval = datetime.timedelta(hours=interval)
+    elif "d" == unit:
+      interval = datetime.timedelta(days=interval)
+    else:
+      return False, {"error": f"invalid unit, expecting [m,h,d]"}
+    return interval
