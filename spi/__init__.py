@@ -63,6 +63,33 @@ class Socrates:
     else:
       raise SocratesConnectError
 
+  def get_predictive_model(self, **kwargs):
+    """
+    Get a trained predictive model from Archimedes
+    :param kwargs:
+        datasource <string> datasource name
+        definition <string> scraper definition name
+    :return:
+        status <bool>
+        response <string>
+    """
+    try:
+      if 'datasource' in kwargs and 'definition' in kwargs:
+        r = requests.post(
+          self.protocol+'://'+self.host+'/archimedes/model',
+          headers=self.headers,
+          json={"operation": "get", "datasource": kwargs['datasource'], "definition": kwargs['definition']},
+          verify=self.verify
+        )
+      else:
+        return False, {"error": "expecting datasource and definition keys in kwargs"}
+      if r.status_code == 200:
+        return True, r.json()
+      else:
+        return False, {"error": str(r.content)}
+    except requests.exceptions.ConnectionError:
+      return False, {"error": "connection error"}
+
   def get_definition(self, **kwargs):
     """
     Get a JSON definition record from a specified api.module endpoint

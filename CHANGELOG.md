@@ -1,3 +1,7 @@
+### 3.4.0
+
+* add get_predictive_model()
+
 ### 3.3.0
 
 * add get_ohlc_interval()
