@@ -393,3 +393,14 @@ class Socrates:
     else:
       return False, {"error": f"invalid unit, expecting [m,h,d]"}
     return interval
+
+  def get_longest_metric_period(self, datasource):
+    metric_list = ['sma']
+    longest = 0
+    for op in datasource['metadata']['etl']:
+      if 'metric' == op['operation']:
+        if op['name'] in metric_list:
+          for period in op['parameters']['periods']:
+            if longest < period:
+              longest = period
+    return longest

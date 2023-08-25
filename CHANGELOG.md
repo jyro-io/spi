@@ -1,3 +1,7 @@
+### 3.5.0
+
+* add get_longest_metric_period()
+
 ### 3.4.0
 
 * add get_predictive_model()
