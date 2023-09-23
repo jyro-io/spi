@@ -101,7 +101,7 @@ class Socrates:
         status <bool>
         response <string>
     """
-    if kwargs['api'] is None:
+    if 'api' not in kwargs:
       kwargs['api'] = 'archimedes'
     try:
       if 'name' in kwargs:
@@ -300,7 +300,7 @@ class Socrates:
         status <bool>
         response <string>
     """
-    if kwargs['api'] is None:
+    if 'api' not in kwargs:
       kwargs['api'] = 'archimedes'
     try:
       r = requests.post(

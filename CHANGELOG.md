@@ -1,3 +1,7 @@
+### 3.5.3
+
+* refactor api parameter
+
 ### 3.5.0
 
 * add get_longest_metric_period()
