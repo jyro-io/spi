@@ -298,6 +298,8 @@ class Socrates:
         status <bool>
         response <string>
     """
+    if kwargs['api'] is None:
+      kwargs['api'] = 'archimedes'
     try:
       r = requests.post(
         self.protocol+'://'+self.host+'/'+kwargs['api']+'/_config',
