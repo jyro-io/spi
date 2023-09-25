@@ -137,6 +137,8 @@ class Socrates:
         status <bool>
         response <string>
     """
+    if 'api' not in kwargs:
+      kwargs['api'] = 'archimedes'
     try:
       r = requests.post(
         self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
@@ -163,6 +165,8 @@ class Socrates:
         status <bool>
         response <string>
     """
+    if 'api' not in kwargs:
+      kwargs['api'] = 'archimedes'
     try:
       r = requests.post(
         self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
@@ -188,6 +192,8 @@ class Socrates:
         status <bool>
         response <string>
     """
+    if 'api' not in kwargs:
+      kwargs['api'] = 'archimedes'
     try:
       r = requests.post(
         self.protocol+'://'+self.host+'/'+kwargs['api']+'/'+kwargs['module'],
